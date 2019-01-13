@@ -1,0 +1,27 @@
+{
+  "name": "fixmds",
+  "version": "1.0.0",
+  "description": "fcc change var to const/let in curriculum",
+  "main": "replaceVars.js",
+  "scripts": {
+    "de": "echo $(process.env)",
+    "test": "mocha *.test.js",
+    "test:watch": "mocha --watch *.test.js",
+    "start": "node replaceVars",
+    "cleanmd": "find . -name \"*.out.md\" -type f -delete",
+    "cleandif": "find . -name \"*.out.md.dif\" -type f -delete",
+    "clean": "npm run cleanmd && npm run cleandif",
+    "lint": "eslint *.js || true"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^6.2.0",
+    "globby": "^8.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^5.12.0",
+    "eslint-config-freecodecamp": "^1.1.1",
+    "mocha": "^5.2.0"
+  }
+}
