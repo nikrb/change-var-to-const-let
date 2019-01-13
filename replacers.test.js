@@ -40,71 +40,72 @@ describe('for loop transform', () => {
 });
 
 describe('split up multi line var definitions', () => {
-  const t = `
-  var a = 1,
-      b = 2;
-  var c = 3;
-  var c5 = 5;
-  var c2 = 3.5, c3 = 3.8,
-      c4 = 3.9;
-  var d = 4;`;
-  const expected = `
-  var a = 1;
-  var b = 2;
-  var c = 3;
-  var c5 = 5;
-  var c2 = 3.5;
-  var c3 = 3.8;
-  var c4 = 3.9;
-  var d = 4;`;
-  it('should separate multine var definitions', () => {
+  it('should separate multiline var definitions', () => {
+    const t = `
+    var a = 1,
+        b = 2;
+    var c = 3;
+    var e = [], f = [];
+    var c5 = 5;
+    var c2 = 3.5, c3 = 3.8,
+        c4 = 3.9;
+    var d = 4;`;
+    const expected = `
+    var a = 1;
+    var b = 2;
+    var c = 3;
+    var e = [];
+    var f = [];
+    var c5 = 5;
+    var c2 = 3.5;
+    var c3 = 3.8;
+    var c4 = 3.9;
+    var d = 4;`;
+    const res = separateMultiLineVars(t);
+    assert.equal(res, expected, 'Failed to separate multiline defs');
+  });
+  it('should not transform for loops', () => {
+    const t = `for (var i = 0; i<arr.lenth; i++){
+      doSomething();
+    }`;
+    const expected = `for (var i = 0; i<arr.lenth; i++){
+      doSomething();
+    }`;
+    const res = separateMultiLineVars(t);
+    assert.equal(res, expected, 'Failed to NOT transform for loop');
+  });
+  it('should preserve indent on multiline declarations and definitions', () => {
+    const t = `
+    var a = 1;
+      var b = 2, c = 3,
+          d = 4;
+    var e, f, g;
+    `;
+      const expected = `
+    var a = 1;
+      var b = 2;
+      var c = 3;
+      var d = 4;
+    var e;
+    var f;
+    var g;
+    `;
     const res = separateMultiLineVars(t);
     assert.equal(res, expected,
-      'Failed to separate multiline decs with:' + res);
-  });
-  const fortest = `for (var i = 0; i<arr.lenth; i++){
-    doSomething();
-  }`;
-  const forexpected = `for (var i = 0; i<arr.lenth; i++){
-    doSomething();
-  }`;
-  it('should not transform for loops', () => {
-    const res = separateMultiLineVars(fortest);
-    assert.equal(res, forexpected,
-      'Failed to NOT transform for loop with:' + res);
-  });
-  const t2 = `
-var a = 1;
-  var b = 2, c = 3,
-      d = 4;
-var e, f, g;
-`;
-  const expected2 = `
-var a = 1;
-  var b = 2;
-  var c = 3;
-  var d = 4;
-var e;
-var f;
-var g;
-`;
-  it('should preserve indent on multiline declarations and definitions', () => {
-    const res = separateMultiLineVars(t2);
-    assert.equal(res, expected2,
       'Failed to preserve indent on multiline decs and defs');
   });
 });
 
 describe('transform var to const', () => {
-  const t = `var a = 1,
-        b = 2;
-    var a = 1;
-    var b = 2;`;
-  const expected = `const a = 1,
-        b = 2;
-    const a = 1;
-    const b = 2;`;
   it('should replace var with const', () => {
+    const t = `var a = 1,
+          b = 2;
+      var a = 1;
+      var b = 2;`;
+    const expected = `const a = 1,
+          b = 2;
+      const a = 1;
+      const b = 2;`;
     const res = varconst(t);
     assert.equal(res, expected, 'Failed to replace var with const');
   });
