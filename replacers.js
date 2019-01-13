@@ -24,10 +24,16 @@ exports.const2let = str => {
         const varname = match.split(' ')[1];
         // template string fubar's editor
         const varass = new RegExp(
-          '(const)?\\s+' + varname + '\\s+[+\\-\\/*]?=\\s*[\\w]+', 'g');
+          '(const)?\\s*' + varname + '\\s*[+\\-\\/*]?=\\s*[\\\'"\\[]?\\s*[\\w]+', 'g');
+        const varincdec = new RegExp(`(\\\+\\\+${varname})|(--${varname})|(${varname}--)|(${varname}\\\+\\\+)`);
+        const idass = cur.match(varincdec);
         const reass = cur.match(varass);
         // use let if we have a reassignment
-        if (reass !== null) {
+        if (idass !== null) {
+          if (idass.length) {
+            return `let ${varname} =`;
+          }
+        } else if (reass !== null) {
           const constcount = reass.reduce(
             (a, c) => a + c.includes('const'), 0);
           if (reass.length > 1 && constcount < 2 ) {

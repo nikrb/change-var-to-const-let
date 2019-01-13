@@ -110,19 +110,61 @@ describe('change const to let if variable reassigned', () => {
   it('should replace const with let if var reassigned', () => {
     const t = `const a = 1;
       const b = 2;
-      const c = 3;
+      const c = 'hello';
       const d = 4;
       b = 5;
-      c = 6;`;
+      c += ' world';`;
     const expected = `const a = 1;
       let b = 2;
-      let c = 3;
+      let c = 'hello';
       const d = 4;
       b = 5;
-      c = 6;`;
+      c += ' world';`;
     const res = const2let(t);
     assert.equal(res, expected,
       'Failed to replace const with let on reassignment');
+  });
+  it('should recognise increment/decrement operators as assignment', () => {
+    const t = `
+    const a = 1;
+    const b = 2;
+    const c = 3;
+    const d = 4;
+    ++a;
+    --b;
+    c++;
+    d--;
+    `;
+    const expected = `
+    let a = 1;
+    let b = 2;
+    let c = 3;
+    let d = 4;
+    ++a;
+    --b;
+    c++;
+    d--;
+    `;
+    const res = const2let(t);
+    assert.equal(res, expected, 'Failed to recognise increment/decrement operators');
+  });
+  it('should recognise array destructure reassignment', () => {
+    const t = `
+    const a = 1;
+    const b = 2;
+    const c = 3;
+    c += a;
+    a = [b, b=b+a][0];
+    `;
+    const expected = `
+    let a = 1;
+    let b = 2;
+    let c = 3;
+    c += a;
+    a = [b, b=b+a][0];
+    `;
+    const res = const2let(t);
+    assert.equal(res, expected, 'Failed to recognise array destructure reassignment');
   });
   it('should respect sections in md files when finding reassignment',
     () => {
