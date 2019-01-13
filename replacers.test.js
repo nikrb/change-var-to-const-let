@@ -289,6 +289,18 @@ Here is the same function from above rewritten to use this new syntax:
     assert.equal(res, expected,
       'Failed to catch fat arrow parameter masquerading as assignment');
   });
+  it('should preserve const for future assignment with same suffix', () => {
+    const t = `
+      const f = 1;
+      const af = 2;
+    `;
+    const expected = `
+      const f = 1;
+      const af = 2;
+    `;
+    const res = const2let(t);
+    assert.equal(res, expected, 'Failed to catch var with same suffix');
+  });
   it('should preserve const for react prop assignment', () => {
     const t = `
       const store = Redux.createStore(messageReducer);

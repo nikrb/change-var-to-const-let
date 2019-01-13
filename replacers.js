@@ -24,7 +24,7 @@ exports.const2let = str => {
         const isDefinition = postVar === '=';
         // template string fubar's editor
         const varassre = new RegExp(
-          '(const)?\\s*' + varname + '\\s*[+\\-\\/*\\^\\%]?=\\s*[\\\'"\\[]?\\s*[\\w]+', 'g');
+          '(const)?\\s*\\b' + varname + '\\s*[+\\-\\/*\\^\\%]?=\\s*[\\\'"\\[]?\\s*[\\w]+', 'g');
         // use let if we have a reassignment
         const varassresult = cur.match(varassre);
         let reass = null;
