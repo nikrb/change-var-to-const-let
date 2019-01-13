@@ -14,7 +14,7 @@ exports.varconst = str => {
   return str.replace(varre, 'const $1');
 };
 
-const constre = /const\s+(\w+)\s+=/g;
+const constre = /const\s+(\w+)\s*=/g;
 exports.const2let = str => {
   const sections = str.split('</section>');
   return sections.reduce((acc, cur) => {
@@ -25,12 +25,13 @@ exports.const2let = str => {
         // template string fubar's editor
         const varass = new RegExp(
           '(const)?\\s*' + varname + '\\s*[+\\-\\/*]?=\\s*[\\\'"\\[]?\\s*[\\w]+', 'g');
-        const varincdec = new RegExp(`(\\\+\\\+${varname})|(--${varname})|(${varname}--)|(${varname}\\\+\\\+)`);
-        const idass = cur.match(varincdec);
-        const reass = cur.match(varass);
         // use let if we have a reassignment
-        if (idass !== null) {
-          if (idass.length) {
+        const reass = cur.match(varass);
+        // and inc/dec operators
+        const varincdec = new RegExp(`(\\\+\\\+${varname})|(--${varname})|(${varname}--)|(${varname}\\\+\\\+)`);
+        const incdecass = cur.match(varincdec);
+        if (incdecass !== null) {
+          if (incdecass.length) {
             return `let ${varname} =`;
           }
         } else if (reass !== null) {

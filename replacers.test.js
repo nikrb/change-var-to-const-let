@@ -39,7 +39,7 @@ describe('for loop transform', () => {
   });
 });
 
-describe('split up multi line var declarations', () => {
+describe('split up multi line var definitions', () => {
   const t = `
   var a = 1,
       b = 2;
@@ -57,7 +57,7 @@ describe('split up multi line var declarations', () => {
   var c3 = 3.8;
   var c4 = 3.9;
   var d = 4;`;
-  it('should separate multine var declarations', () => {
+  it('should separate multine var definitions', () => {
     const res = separateMultiLineVars(t);
     assert.equal(res, expected,
       'Failed to separate multiline decs with:' + res);
@@ -84,7 +84,7 @@ var a = 1;
   var c = 3;
   var d = 4;
 `;
-  it('should preserve indent on multiline declarations', () => {
+  it('should preserve indent on multiline definitions', () => {
     const res = separateMultiLineVars(t2);
     assert.equal(res, expected2,
       'Failed to preserve indent on multiline decs');
@@ -107,7 +107,7 @@ describe('transform var to const', () => {
 });
 
 describe('change const to let if variable reassigned', () => {
-  it('should replace const with let if var reassigned', () => {
+   it('should replace const with let if var reassigned', () => {
     const t = `const a = 1;
       const b = 2;
       const c = 'hello';
