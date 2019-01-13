@@ -24,16 +24,23 @@ exports.const2let = str => {
         const isDefinition = postVar === '=';
         // template string fubar's editor
         const varassre = new RegExp(
-          '(const)?\\s*\\b' + varname + '\\s*[+\\-\\/*\\^\\%]?=\\s*[\\\'"\\[]?\\s*[\\w]+', 'g');
+          '(const)?\\s*\\b\(\.)?' + varname +
+          '\\s*[+\\-\\/*\\^\\%]?=\\s*[\\\'"\\[]?\\s*[\\w]+', 'g');
         // use let if we have a reassignment
         const varassresult = cur.match(varassre);
         let reass = null;
         if (varassresult) {
-          // not resassignment if it's a redefition or redeclaration
-          reass = varassresult.filter(s => s.indexOf('const') === -1);
+          // not resassignment if it's a redefition, redeclaration or object
+          // member assignment
+          reass = varassresult.filter(
+            s => s.indexOf('const') === -1 && s.indexOf('.') === -1
+          );
         }
         // and inc/dec operators
-        const varincdecre = new RegExp(`(\\\+\\\+${varname})|(--${varname})|(${varname}--)|(${varname}\\\+\\\+)`);
+        const varincdecre = new RegExp(
+          `(\\\+\\\+${varname})|(--${varname})|` +
+          `(${varname}--)|(${varname}\\\+\\\+)`
+        );
         const incdecass = cur.match(varincdecre);
         if (incdecass !== null) {
           if (incdecass.length) {
@@ -41,7 +48,7 @@ exports.const2let = str => {
           }
         } else if (reass !== null) {
           if (reass.length) {
-            return `let ${varname}${isDefinition?' =':';'}`;
+            return `let ${varname}${isDefinition ? ' =' : ';'}`;
           }
         }
         return match;

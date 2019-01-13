@@ -133,7 +133,11 @@ describe('change const to let if variable reassigned', () => {
       c2 = 6;
     `;
     const res = const2let(t);
-    assert.equal(res, expected, 'Failed to handle declaration and reassignment');
+    assert.equal(
+      res,
+      expected,
+      'Failed to handle declaration and reassignment'
+    );
   });
   it('should recognise shorthand assignment operators', () => {
     const t = `
@@ -165,7 +169,11 @@ describe('change const to let if variable reassigned', () => {
       f %= 11;
     `;
     const res = const2let(t);
-    assert.equal(res, expected, 'Failed to recognise shorthand assignment operators');
+    assert.equal(
+      res,
+      expected,
+      'Failed to recognise shorthand assignment operators'
+    );
   });
   it('should recognise increment/decrement operators as assignment', () => {
     const t = `
@@ -189,7 +197,11 @@ describe('change const to let if variable reassigned', () => {
     d--;
     `;
     const res = const2let(t);
-    assert.equal(res, expected, 'Failed to recognise increment/decrement operators');
+    assert.equal(
+      res,
+      expected,
+      'Failed to recognise increment/decrement operators'
+    );
   });
   it('should recognise array destructure reassignment', () => {
     const t = `
@@ -207,7 +219,11 @@ describe('change const to let if variable reassigned', () => {
     a = [b, b=b+a][0];
     `;
     const res = const2let(t);
-    assert.equal(res, expected, 'Failed to recognise array destructure reassignment');
+    assert.equal(
+      res,
+      expected,
+      'Failed to recognise array destructure reassignment'
+    );
   });
   it('should respect sections in md files when finding reassignment',
     () => {
@@ -242,7 +258,11 @@ describe('change const to let if variable reassigned', () => {
 </section>
 `;
     const res = const2let(t);
-    assert.equal(res, expected, 'Failed to respect sections for reassignment');
+    assert.equal(
+      res,
+      expected,
+      'Failed to respect sections for reassignment'
+    );
   });
   it('should preserve const if reassignment is also a definition', () => {
     /* eslint-disable max-len */
@@ -300,6 +320,24 @@ Here is the same function from above rewritten to use this new syntax:
     `;
     const res = const2let(t);
     assert.equal(res, expected, 'Failed to catch var with same suffix');
+  });
+  it('should preserve const for object member assignment with same name',
+    () => {
+    const t = `
+      const change = 5;
+      const obj = {};
+      obj.change = change;
+    `;
+    const expected = `
+      const change = 5;
+      const obj = {};
+      obj.change = change;
+    `;
+    const res = const2let(t);
+    assert.equal(
+      res,
+      expected,
+      'Failed to catch object member assigment with same name');
   });
   it('should preserve const for react prop assignment', () => {
     const t = `
