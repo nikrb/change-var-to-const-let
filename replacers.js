@@ -14,24 +14,34 @@ exports.varconst = str => {
   return str.replace(varre, 'const $1');
 };
 
-const constre = /const\s+(\w+)\s+=/g;
+const constre = /const\s+(\w+)\s*([=;])/g;
 exports.const2let = str => {
   const sections = str.split('</section>');
   return sections.reduce((acc, cur) => {
     const closingSection = cur.includes('<section') ? '</section>' : '';
     return acc.concat(
-      cur.replace(constre, match => {
-        const varname = match.split(' ')[1];
+      cur.replace(constre, (match, varname, postVar) => {
+        const isDefinition = postVar === '=';
         // template string fubar's editor
-        const varass = new RegExp(
-          '(const)?\\s+' + varname + '\\s+[+\\-\\/*]?=\\s*[\\w]+', 'g');
-        const reass = cur.match(varass);
+        const varassre = new RegExp(
+          '(const)?\\s*' + varname + '\\s*[+\\-\\/*\\^\\%]?=\\s*[\\\'"\\[]?\\s*[\\w]+', 'g');
         // use let if we have a reassignment
-        if (reass !== null) {
-          const constcount = reass.reduce(
-            (a, c) => a + c.includes('const'), 0);
-          if (reass.length > 1 && constcount < 2 ) {
+        const varassresult = cur.match(varassre);
+        let reass = null;
+        if (varassresult) {
+          // not resassignment if it's a redefition or redeclaration
+          reass = varassresult.filter(s => s.indexOf('const') === -1);
+        }
+        // and inc/dec operators
+        const varincdecre = new RegExp(`(\\\+\\\+${varname})|(--${varname})|(${varname}--)|(${varname}\\\+\\\+)`);
+        const incdecass = cur.match(varincdecre);
+        if (incdecass !== null) {
+          if (incdecass.length) {
             return `let ${varname} =`;
+          }
+        } else if (reass !== null) {
+          if (reass.length) {
+            return `let ${varname}${isDefinition?' =':';'}`;
           }
         }
         return match;
