@@ -94,6 +94,29 @@ describe('split up multi line var definitions', () => {
     assert.equal(res, expected,
       'Failed to preserve indent on multiline decs and defs');
   });
+  it('should handle mixed multiple declarations and definitions', () => {
+    const t = `
+      var i, ch, chars = input.split(' '), chars2 = input.split(" ");
+      for (i = 1; i < 6; i++) {
+        ch = chars.splice(i, 1);
+      }
+    `;
+    const expected = `
+      var i;
+      var ch;
+      var chars = input.split(' ');
+      var chars2 = input.split(" ");
+      for (i = 1; i < 6; i++) {
+        ch = chars.splice(i, 1);
+      }
+    `;
+    const res = separateMultiLineVars(t);
+    assert.equal(
+      res,
+      expected,
+      'Failed to handle mixed declarations and definitions'
+    );
+  });
 });
 
 describe('transform var to const', () => {

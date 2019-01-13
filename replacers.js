@@ -56,7 +56,7 @@ exports.const2let = str => {
   }, '');
 };
 
-const separateMultilineVarsRE = /\s*var\s+[\s\w=,.\[\]]+;/g;
+const separateMultilineVarsRE = /\s*var\s+[\s\w=,.'"()\[\]]+;/g;
 exports.separateMultiLineVars = str => {
   return str.replace(separateMultilineVarsRE, match => {
     const indent = getIndent(match);
