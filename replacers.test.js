@@ -77,17 +77,21 @@ describe('split up multi line var definitions', () => {
 var a = 1;
   var b = 2, c = 3,
       d = 4;
+var e, f, g;
 `;
   const expected2 = `
 var a = 1;
   var b = 2;
   var c = 3;
   var d = 4;
+var e;
+var f;
+var g;
 `;
-  it('should preserve indent on multiline definitions', () => {
+  it('should preserve indent on multiline declarations and definitions', () => {
     const res = separateMultiLineVars(t2);
     assert.equal(res, expected2,
-      'Failed to preserve indent on multiline decs');
+      'Failed to preserve indent on multiline decs and defs');
   });
 });
 
@@ -107,22 +111,61 @@ describe('transform var to const', () => {
 });
 
 describe('change const to let if variable reassigned', () => {
-   it('should replace const with let if var reassigned', () => {
-    const t = `const a = 1;
-      const b = 2;
-      const c = 'hello';
-      const d = 4;
-      b = 5;
-      c += ' world';`;
-    const expected = `const a = 1;
-      let b = 2;
-      let c = 'hello';
-      const d = 4;
-      b = 5;
-      c += ' world';`;
+  it('should handle declarations and reassignment', () => {
+    const t = `
+      const a;
+      const b = 1;
+      const b2 = 2;
+      const c=3;
+      const c2=4;
+      a = 1;
+      b2 = 5;
+      c2 = 6;
+    `;
+    const expected = `
+      let a;
+      const b = 1;
+      let b2 = 2;
+      const c=3;
+      let c2 =4;
+      a = 1;
+      b2 = 5;
+      c2 = 6;
+    `;
     const res = const2let(t);
-    assert.equal(res, expected,
-      'Failed to replace const with let on reassignment');
+    assert.equal(res, expected, 'Failed to handle declaration and reassignment');
+  });
+  it('should recognise shorthand assignment operators', () => {
+    const t = `
+      const a = 1;
+      const b = 2;
+      const c;
+      const d = 4;
+      const e = 5;
+      const f = 5.5;
+      a += 6;
+      b -= 7;
+      c *= 8;
+      d /= 9;
+      e ^= 10;
+      f %= 11;
+    `;
+    const expected = `
+      let a = 1;
+      let b = 2;
+      let c;
+      let d = 4;
+      let e = 5;
+      let f = 5.5;
+      a += 6;
+      b -= 7;
+      c *= 8;
+      d /= 9;
+      e ^= 10;
+      f %= 11;
+    `;
+    const res = const2let(t);
+    assert.equal(res, expected, 'Failed to recognise shorthand assignment operators');
   });
   it('should recognise increment/decrement operators as assignment', () => {
     const t = `
