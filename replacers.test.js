@@ -249,6 +249,32 @@ describe('change const to let if variable reassigned', () => {
       'Failed to recognise array destructure reassignment'
     );
   });
+  it('should allow separate declaration of for loop iterator', () => {
+    const t = `
+      const i;
+      const ch;
+      const chars = input.split(' ');
+      const chars2 = input.split(" ");
+      for (i = 1; i < 6; i++) {
+        ch = chars.splice(i, 1);
+      }
+    `;
+    const expected = `
+      let i;
+      let ch;
+      const chars = input.split(' ');
+      const chars2 = input.split(" ");
+      for (i = 1; i < 6; i++) {
+        ch = chars.splice(i, 1);
+      }
+    `;
+    const res = const2let(t);
+    assert.equal(
+      res,
+      expected,
+      'Failed to allow separate declaration of for loop iterator'
+    );
+  });
   it('should respect sections in md files when finding reassignment',
     () => {
     const t = `

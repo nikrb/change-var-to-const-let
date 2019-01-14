@@ -24,7 +24,7 @@ exports.const2let = str => {
         const isDefinition = postVar === '=';
         // template string fubar's editor
         const varassre = new RegExp(
-          '(const)?\\s*\\b\(\.)?' + varname +
+          '(const|for\\s*\\()?\\s*\\b\(\\.)?' + varname +
           '\\s*[+\\-\\/*\\^\\%]?=\\s*[\\\'"\\[]?\\s*[\\w]+', 'g');
         // use let if we have a reassignment
         const varassresult = cur.match(varassre);
@@ -33,7 +33,10 @@ exports.const2let = str => {
           // not resassignment if it's a redefition, redeclaration or object
           // member assignment
           reass = varassresult.filter(
-            s => s.indexOf('const') === -1 && s.indexOf('.') === -1
+            s =>
+              s.indexOf('const') === -1 &&
+              s.indexOf('.') === -1 &&
+              s.indexOf('for') === -1
           );
         }
         // and inc/dec operators
@@ -44,7 +47,7 @@ exports.const2let = str => {
         const incdecass = cur.match(varincdecre);
         if (incdecass !== null) {
           if (incdecass.length) {
-            return `let ${varname} =`;
+            return `let ${varname}${isDefinition ? ' =' : ';'}`;
           }
         } else if (reass !== null) {
           if (reass.length) {
