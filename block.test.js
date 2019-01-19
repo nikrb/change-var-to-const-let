@@ -3,11 +3,17 @@ const assert = require('assert');
 const { findMatchingBrace, getBlocks } = require('./replacers');
 
 describe('blocks', () => {
+  it('should handle no blocks', () => {
+    const t = ' ';
+    const expected = [' '];
+    const res = getBlocks(t);
+    assert.deepStrictEqual(res, expected, 'Failed to handle no blocks');
+  });
   it('should work for a single block', () => {
     const t = `{ }`;
-    const expected = `{ }`;
+    const expected = ['{ }'];
     const res = getBlocks(t);
-    assert.strictEqual(t, expected, 'Failed for single block');
+    assert.deepStrictEqual(res, expected, 'Failed for single block');
   });
   it('should split nested blocks', () => {
     const t = `

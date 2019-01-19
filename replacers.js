@@ -22,6 +22,7 @@ exports.findMatchingBrace = findMatchingBrace;
 const getBlocks = str => {
   const blocks = [];
   let open = str.indexOf('{');
+  if (open === -1) return [str];
   while(open !== -1) {
     const curstr = str.substring(open);
     const close = findMatchingBrace(curstr);
