@@ -15,7 +15,7 @@ describe('for loop transform', () => {
     }`;
   it('should replace vars in for loops', () => {
     const res = fors(t);
-    assert.equal(res, expected, 'Failed to replace var in for loops');
+    assert.strictEqual(res, expected, 'Failed to replace var in for loops');
   });
   const t2 = `
   var a = 1;
@@ -35,7 +35,7 @@ describe('for loop transform', () => {
   `;
   it('should preserve indent', () => {
     const res = fors(t2);
-    assert.equal(res, expected2, 'Failed to preserve indent');
+    assert.strictEqual(res, expected2, 'Failed to preserve indent');
   });
 });
 
@@ -62,7 +62,7 @@ describe('split up multi line var definitions', () => {
     var c4 = 3.9;
     var d = 4;`;
     const res = separateMultiLineVars(t);
-    assert.equal(res, expected, 'Failed to separate multiline defs');
+    assert.strictEqual(res, expected, 'Failed to separate multiline defs');
   });
   it('should not transform for loops', () => {
     const t = `for (var i = 0; i<arr.lenth; i++){
@@ -72,7 +72,7 @@ describe('split up multi line var definitions', () => {
       doSomething();
     }`;
     const res = separateMultiLineVars(t);
-    assert.equal(res, expected, 'Failed to NOT transform for loop');
+    assert.strictEqual(res, expected, 'Failed to NOT transform for loop');
   });
   it('should preserve indent on multiline declarations and definitions', () => {
     const t = `
@@ -91,7 +91,7 @@ describe('split up multi line var definitions', () => {
     var g;
     `;
     const res = separateMultiLineVars(t);
-    assert.equal(res, expected,
+    assert.strictEqual(res, expected,
       'Failed to preserve indent on multiline decs and defs');
   });
   it('should handle mixed multiple declarations and definitions', () => {
@@ -111,7 +111,7 @@ describe('split up multi line var definitions', () => {
       }
     `;
     const res = separateMultiLineVars(t);
-    assert.equal(
+    assert.strictEqual(
       res,
       expected,
       'Failed to handle mixed declarations and definitions'
@@ -130,7 +130,7 @@ describe('transform var to const', () => {
       const a = 1;
       const b = 2;`;
     const res = varconst(t);
-    assert.equal(res, expected, 'Failed to replace var with const');
+    assert.strictEqual(res, expected, 'Failed to replace var with const');
   });
 });
 
@@ -157,7 +157,7 @@ describe('change const to let if variable reassigned', () => {
       c2 = 6;
     `;
     const res = const2let(t);
-    assert.equal(
+    assert.strictEqual(
       res,
       expected,
       'Failed to handle declaration and reassignment'
@@ -193,7 +193,7 @@ describe('change const to let if variable reassigned', () => {
       f %= 11;
     `;
     const res = const2let(t);
-    assert.equal(
+    assert.strictEqual(
       res,
       expected,
       'Failed to recognise shorthand assignment operators'
@@ -221,7 +221,7 @@ describe('change const to let if variable reassigned', () => {
     d--;
     `;
     const res = const2let(t);
-    assert.equal(
+    assert.strictEqual(
       res,
       expected,
       'Failed to recognise increment/decrement operators'
@@ -243,7 +243,7 @@ describe('change const to let if variable reassigned', () => {
     a = [b, b=b+a][0];
     `;
     const res = const2let(t);
-    assert.equal(
+    assert.strictEqual(
       res,
       expected,
       'Failed to recognise array destructure reassignment'
@@ -269,7 +269,7 @@ describe('change const to let if variable reassigned', () => {
       }
     `;
     const res = const2let(t);
-    assert.equal(
+    assert.strictEqual(
       res,
       expected,
       'Failed to allow separate declaration of for loop iterator'
@@ -308,7 +308,7 @@ describe('change const to let if variable reassigned', () => {
 </section>
 `;
     const res = const2let(t);
-    assert.equal(
+    assert.strictEqual(
       res,
       expected,
       'Failed to respect sections for reassignment'
@@ -340,7 +340,7 @@ Here is the same function from above rewritten to use this new syntax:
 </section>`;
     /* eslint-enable max-len */
     const res = const2let(t);
-    assert.equal(res, expected,
+    assert.strictEqual(res, expected,
       'Failed to preserve const when reassignment is also a definition');
   });
   it('should preserve const for fat arrow parameter (e.g. socket => // ...)',
@@ -356,7 +356,7 @@ Here is the same function from above rewritten to use this new syntax:
       doSomething();
     }`;
     const res = const2let(t);
-    assert.equal(res, expected,
+    assert.strictEqual(res, expected,
       'Failed to catch fat arrow parameter masquerading as assignment');
   });
   it('should preserve const for future assignment with same suffix', () => {
@@ -369,7 +369,7 @@ Here is the same function from above rewritten to use this new syntax:
       const af = 2;
     `;
     const res = const2let(t);
-    assert.equal(res, expected, 'Failed to catch var with same suffix');
+    assert.strictEqual(res, expected, 'Failed to catch var with same suffix');
   });
   it('should preserve const for object member assignment with same name',
     () => {
@@ -384,7 +384,7 @@ Here is the same function from above rewritten to use this new syntax:
       obj.change = change;
     `;
     const res = const2let(t);
-    assert.equal(
+    assert.strictEqual(
       res,
       expected,
       'Failed to catch object member assigment with same name');
@@ -409,7 +409,7 @@ Here is the same function from above rewritten to use this new syntax:
       );
     `;
     const res = const2let(t);
-    assert.equal(res, expected, 'Failed to catch react prop assignment');
+    assert.strictEqual(res, expected, 'Failed to catch react prop assignment');
   });
   it('should respect blank lines', () => {
     const t = `
@@ -421,7 +421,7 @@ Here is the same function from above rewritten to use this new syntax:
     </section>
     `;
     const res = const2let(t);
-    assert.equal(res, expected, 'Failed to respect blank lines');
+    assert.strictEqual(res, expected, 'Failed to respect blank lines');
   });
   it('should respect scope', () => {
     const t = `
