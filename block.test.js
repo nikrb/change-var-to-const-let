@@ -5,13 +5,13 @@ const { findMatchingBrace, getBlocks } = require('./replacers');
 describe('blocks', () => {
   it('should handle no blocks', () => {
     const t = ' ';
-    const expected = [' '];
+    const expected = [{ text: ' ', children: null }];
     const res = getBlocks(t);
     assert.deepStrictEqual(res, expected, 'Failed to handle no blocks');
   });
   it('should work for a single block', () => {
     const t = `{ }`;
-    const expected = ['{ }'];
+    const expected = [{ text: '{ }', children: null }];
     const res = getBlocks(t);
     assert.deepStrictEqual(res, expected, 'Failed for single block');
   });
@@ -24,9 +24,10 @@ describe('blocks', () => {
   }
 }
     `;
-    const expected = [
-      `{\n  const block1;\n  {\n    const block2;\n  }\n}`,
-      `{\n    const block2;\n  }`,
+    const expected = [{
+        text: `{\n  const block1;\n  {\n    const block2;\n  }\n}`,
+        children: [{ text: '{\n    const block2;\n  }', children: null }],
+      },
     ];
     const res = getBlocks(t);
     assert.deepStrictEqual(res, expected, 'Failed to split block');
@@ -34,8 +35,8 @@ describe('blocks', () => {
   it('should split consecutive blocks', () => {
     const t = `{ const firstblock; }{ const secondblock; } `;
     const expected = [
-      "{ const firstblock; }",
-      "{ const secondblock; }",
+      { text: '{ const firstblock; }', children: null },
+      { text: '{ const secondblock; }', children: null },
     ];
     const res = getBlocks(t);
     assert.deepStrictEqual(res, expected, 'Failed to split consecutive blocks');
@@ -58,15 +59,64 @@ describe('blocks', () => {
   }
 }
     `;
-    const expected = [
-      '{\n  const block1;\n  {\n    const block2;\n  }\n  {\n    const block3;\n  }\n}',
-      '{\n    const block2;\n  }',
-      '{\n    const block3;\n  }',
-      '{\n  const block4;\n  {\n    const block5;\n  }\n}',
-      '{\n    const block5;\n  }',
+    const expected = [{
+        text: '{\n  const block1;\n  {\n    const block2;\n  }\n  {\n    const block3;\n  }\n}',
+        children: [
+          { text: '{\n    const block2;\n  }', children: null },
+          { text: '{\n    const block3;\n  }', children: null },
+        ],
+      }, {
+        text: '{\n  const block4;\n  {\n    const block5;\n  }\n}',
+        children: [
+          { text: '{\n    const block5;\n  }', children: null },
+        ],
+      },
     ];
     const res = getBlocks(t);
     assert.deepStrictEqual(res, expected, 'Failed to handle mixed blocks');
   });
+});
+
+const normaliseBlocks = blocks => {
+  return blocks.map(block => {
+    if (block.children) {
+      block.children.forEach((child, i) => {
+        if (child.children) normaliseBlock(child.children);
+        block.text = block.text.replace(child.text, `<block${i}>`);
+      });
+    }
+    return block;
+  });
+};
+
+it('should blockety', () => {
+  const blocks =  [{
+      text: '{\n  const block1;\n  {\n    const block2;\n  }\n  {\n    const block3;\n  }\n}',
+      children: [
+        { text: '{\n    const block2;\n  }', children: null },
+        { text: '{\n    const block3;\n  }', children: null },
+      ],
+    }, {
+      text: '{\n  const block4;\n  {\n    const block5;\n  }\n}',
+      children: [
+        { text: '{\n    const block5;\n  }', children: null },
+      ],
+    },
+  ];
+  const expected =  [{
+      text: '{\n  const block1;\n  <block0>\n  <block1>\n}',
+      children: [
+        { text: '{\n    const block2;\n  }', children: null },
+        { text: '{\n    const block3;\n  }', children: null },
+      ],
+    }, {
+      text: '{\n  const block4;\n  <block0>\n}',
+      children: [
+        { text: '{\n    const block5;\n  }', children: null },
+      ],
+    },
+  ];
+  const res = normaliseBlocks(blocks);
+  assert.deepStrictEqual(res, expected, 'Failed blockety');
 });
 

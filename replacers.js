@@ -22,16 +22,18 @@ exports.findMatchingBrace = findMatchingBrace;
 const getBlocks = str => {
   const blocks = [];
   let open = str.indexOf('{');
-  if (open === -1) return [str];
+  if (open === -1) return [{ text: str, children: null }];
   while(open !== -1) {
+    const newblock = { children: null };
     const curstr = str.substring(open);
     const close = findMatchingBrace(curstr);
     const block = curstr.substring(0, close + 1);
-    blocks.push(block);
+    newblock.text = block;
     const nestedOpen = block.indexOf('{', 1);
     if (nestedOpen > -1) {
-      blocks.push(...getBlocks(block.substring(1)));
+      newblock.children = getBlocks(block.substring(1));
     }
+    blocks.push(newblock);
     open = str.indexOf('{', open + close + 1);
   }
   return blocks;
