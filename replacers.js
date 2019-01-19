@@ -4,6 +4,39 @@ function getIndent(s) {
   return ' '.repeat(count - 1);
 }
 
+const findMatchingBrace = str => {
+  let count = 0;
+  let ndx = 0;
+  while(ndx < str.length) {
+    if (str[ndx] === '{') count++;
+    if (str[ndx] === '}') {
+      count--;
+      if (count === 0) break;
+    }
+    ndx += 1;
+  }
+  return ndx;
+};
+exports.findMatchingBrace = findMatchingBrace;
+
+const getBlocks = str => {
+  const blocks = [];
+  let open = str.indexOf('{');
+  while(open !== -1) {
+    const curstr = str.substring(open);
+    const close = findMatchingBrace(curstr);
+    const block = curstr.substring(0, close + 1);
+    blocks.push(block);
+    const nestedOpen = block.indexOf('{', 1);
+    if (nestedOpen > -1) {
+      blocks.push(...getBlocks(block.substring(1)));
+    }
+    open = str.indexOf('{', open + close + 1);
+  }
+  return blocks;
+};
+exports.getBlocks = getBlocks;
+
 const forre = /(for\s*\()\s*\bvar\b\s+([a-zA-Z0-9]+)/g;
 exports.fors = str => {
   return str.replace(forre, '$1let $2');

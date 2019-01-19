@@ -423,5 +423,37 @@ Here is the same function from above rewritten to use this new syntax:
     const res = const2let(t);
     assert.equal(res, expected, 'Failed to respect blank lines');
   });
+  it('should respect scope', () => {
+    const t = `
+    {
+      const a = 1;
+      {
+        const b = 2;
+      }
+    }
+    {
+      const c = 3;
+      {
+        c = 4;
+      }
+    }
+    `;
+    const expected = `
+    {
+      const a = 1;
+      {
+        const b = 2;
+      }
+    }
+    {
+      let c = 3;
+      {
+        c = 4;
+      }
+    }
+    `;
+    const res = const2let(t);
+    assert.strictEqual(res, expected, 'Failed to respect scope');
+  });
 });
 
