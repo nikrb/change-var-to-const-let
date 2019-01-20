@@ -56,6 +56,7 @@ exports.normaliseBlocks = normaliseBlocks;
 const getBlocks = str => {
   const blocks = [];
   let open = str.indexOf('{');
+  let lastCloseNdx = str.length+1;
   if (open === -1) return [{ text: str, children: null }];
   // normally a block starts with open brace, but not for body text
   if (open > 0) {
@@ -72,7 +73,17 @@ const getBlocks = str => {
       newblock.children = getBlocks(text.substring(nestedOpen));
     }
     blocks.push(newblock);
+    lastCloseNdx = open + close;
     open = str.indexOf('{', open + close + 1);
+    if (open - lastCloseNdx > 1) {
+      blocks.push({ text: str.substring(lastCloseNdx + 1, open), children: null });
+    }
+  }
+  if (lastCloseNdx < str.length) {
+    let endndx = str.indexOf('}', lastCloseNdx + 1);
+    if (endndx === -1) endndx = str.length;
+    const text = str.substring(lastCloseNdx + 1, endndx);
+    if (text.length) blocks.push({ text, children: null });
   }
   return blocks;
 };
