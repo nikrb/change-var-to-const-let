@@ -141,7 +141,7 @@ describe('normalise blocks', () => {
   });
   it('should normalise text outside blocks', () => {
     const blocks = [{
-        text: '\n',
+        text: 'text outside block\n',
         children: null,
       }, {
         text: '{\n  const block1;\n  {\n    const block2;\n  }\n  {\n    const block3;\n  }\n}',
@@ -157,7 +157,7 @@ describe('normalise blocks', () => {
       },
     ];
     const expected = [{
-        text: '\n',
+        text: 'text outside block\n',
         children: null,
       }, {
         text: '{\n  const block1;\n  {\n    const block2;\n  }\n  {\n    const block3;\n  }\n}',
