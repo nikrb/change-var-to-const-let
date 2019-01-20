@@ -19,6 +19,8 @@ const findMatchingBrace = str => {
 };
 exports.findMatchingBrace = findMatchingBrace;
 
+// reduce the blocks back to a string.
+// hydrate block ids with child text
 const reduceBlocks = blocks => {
   return blocks.reduce((acc, block) => {
     if (block.children) {
@@ -35,6 +37,7 @@ const reduceBlocks = blocks => {
 };
 exports.reduceBlocks = reduceBlocks;
 
+// replace duplicate parent text that's in child with blockid '<block#>'
 const normaliseBlocks = blocks => {
   return blocks.map(block => {
     const newblock = { ...block };
