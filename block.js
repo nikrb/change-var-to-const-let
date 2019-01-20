@@ -21,13 +21,15 @@ exports.findMatchingBrace = findMatchingBrace;
 
 const normaliseBlocks = blocks => {
   return blocks.map(block => {
-    if (block.children) {
-      block.children.forEach((child, i) => {
-        if (child.children) normaliseBlock(child.children);
-        block.text = block.text.replace(child.text, `<block${i}>`);
+    const newblock = { ...block };
+    if (newblock.children) {
+      newblock.part = newblock.text;
+      newblock.children.forEach((child, i) => {
+        if (child.children) normaliseBlocks(child.children);
+        newblock.part = newblock.part.replace(child.text, `<block${i}>`);
       });
     }
-    return block;
+    return newblock;
   });
 };
 exports.normaliseBlocks = normaliseBlocks;
@@ -36,15 +38,19 @@ const getBlocks = str => {
   const blocks = [];
   let open = str.indexOf('{');
   if (open === -1) return [{ text: str, children: null }];
+  // normally a block starts with open brace, but not for body text
+  if (open > 0) {
+    blocks.push({ text: str.substring(0, open), children:null });
+  }
   while(open !== -1) {
     const newblock = { children: null };
     const curstr = str.substring(open);
     const close = findMatchingBrace(curstr);
-    const block = curstr.substring(0, close + 1);
-    newblock.text = block;
-    const nestedOpen = block.indexOf('{', 1);
+    const text = curstr.substring(0, close + 1);
+    newblock.text = text;
+    const nestedOpen = text.indexOf('{', 1);
     if (nestedOpen > -1) {
-      newblock.children = getBlocks(block.substring(1));
+      newblock.children = getBlocks(text.substring(nestedOpen));
     }
     blocks.push(newblock);
     open = str.indexOf('{', open + close + 1);
