@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-const { findMatchingBrace, getBlocks, normaliseBlocks } = require('./block');
+const { findMatchingBrace, getBlocks, normaliseBlocks, reduceBlocks } = require('./block');
 
 describe('blocks', () => {
   it('should handle no blocks', () => {
@@ -176,6 +176,34 @@ describe('normalise blocks', () => {
     ];
     const res = normaliseBlocks(blocks);
     assert.deepStrictEqual(res, expected, 'Failed to normalise text outside blocks');
+  });
+});
+
+describe('reduceBlocks', () => {
+  it('should reduce blocks', () => {
+    const t = [{
+        text: '\n',
+        children: null,
+      }, {
+        text: '{\n  const block1;\n  {\n    const block2;\n  }\n  {\n    const block3;\n  }\n}',
+        part: '{\n  const block1;\n  <block0>\n  <block1>\n}',
+        children: [
+          { text: '{\n    const block2;\n  }', children: null },
+          { text: '{\n    const block3;\n  }', children: null },
+        ],
+      }, {
+        text: '{\n  const block4;\n  {\n    const block5;\n  }\n}',
+        part: '{\n  const block4;\n  <block0>\n}',
+        children: [
+          { text: '{\n    const block5;\n  }', children: null },
+        ],
+      },
+    ];
+    const expected = '\n{\n  const block1;\n  {\n    const block2;\n  }\n  ' +
+      '{\n    const block3;\n  }\n}' +
+      '{\n  const block4;\n  {\n    const block5;\n  }\n}';
+    const res = reduceBlocks(t);
+    assert.strictEqual(res, expected, 'Failed to reduce blocks');
   });
 });
 

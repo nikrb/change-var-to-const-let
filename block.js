@@ -19,6 +19,22 @@ const findMatchingBrace = str => {
 };
 exports.findMatchingBrace = findMatchingBrace;
 
+const reduceBlocks = blocks => {
+  return blocks.reduce((acc, block) => {
+    if (block.children) {
+      const str = block.children.reduce((acc2, b, i) => {
+        let childstr = b.text;
+        if (b.children) childstr = reduceBlocks(b.children);
+        const blockid = `<block${i}>`;
+        return acc2.replace(blockid, b.text);
+      }, block.part);
+      return acc.concat(str);
+    }
+    return acc.concat(block.text);
+  }, '');
+};
+exports.reduceBlocks = reduceBlocks;
+
 const normaliseBlocks = blocks => {
   return blocks.map(block => {
     const newblock = { ...block };
