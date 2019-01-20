@@ -5,7 +5,8 @@
   "main": "replaceVars.js",
   "scripts": {
     "de": "echo $(process.env)",
-    "test": "mocha *.test.js",
+    "test": "mocha",
+    "test:all": "mocha *.test.js",
     "test:watch": "mocha --watch *.test.js",
     "start": "node replaceVars",
     "cleanmd": "find . -name \"*.out.md\" -type f -delete",
