@@ -4,7 +4,6 @@ const {
   fors,
   separateMultiLineVars,
   varconst,
-  getBlocks,
 } = require('./replacers');
 
 describe('for loop transform', () => {
@@ -498,10 +497,8 @@ Here is the same function from above rewritten to use this new syntax:
         }
       }
     }`;
-    // const res = const2let(t);
-    // assert.strictEqual(res, expected, 'Failed to respect scope 2');
-    const res = getBlocks(t);
-    console.log(res[0].children);
+    const res = const2let(t);
+    assert.strictEqual(res, expected, 'Failed to respect scope 2');
   });
 });
 

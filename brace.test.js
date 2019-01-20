@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-const { findMatchingBrace } = require('./replacers');
+const { findMatchingBrace } = require('./block');
 
 describe('find matching brace', () => {
   it('should return string length if no matching brace', () => {

@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-const { findMatchingBrace, getBlocks } = require('./replacers');
+const { findMatchingBrace, getBlocks, normaliseBlocks } = require('./block');
 
 describe('blocks', () => {
   it('should handle no blocks', () => {
@@ -76,18 +76,6 @@ describe('blocks', () => {
     assert.deepStrictEqual(res, expected, 'Failed to handle mixed blocks');
   });
 });
-
-const normaliseBlocks = blocks => {
-  return blocks.map(block => {
-    if (block.children) {
-      block.children.forEach((child, i) => {
-        if (child.children) normaliseBlock(child.children);
-        block.text = block.text.replace(child.text, `<block${i}>`);
-      });
-    }
-    return block;
-  });
-};
 
 it('should blockety', () => {
   const blocks =  [{
