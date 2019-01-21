@@ -21,18 +21,18 @@ exports.findMatchingBrace = findMatchingBrace;
 
 // reduce the blocks back to a string.
 // hydrate block ids with child text
-const reduceBlocks = blocks => {
+const reduceBlocks = fieldname => blocks => {
   return blocks.reduce((acc, block) => {
     if (block.children) {
       const str = block.children.reduce((acc2, b, i) => {
-        let childstr = b.text;
-        if (b.children) childstr = reduceBlocks(b.children);
+        let childstr = b[fieldname];
+        if (b.children) childstr = reduceBlocks(fieldname)(b.children);
         const blockid = `<block${i}>`;
-        return acc2.replace(blockid, b.text);
+        return acc2.replace(blockid, b[fieldname]);
       }, block.part);
       return acc.concat(str);
     }
-    return acc.concat(block.text);
+    return acc.concat(block[fieldname]);
   }, '');
 };
 exports.reduceBlocks = reduceBlocks;

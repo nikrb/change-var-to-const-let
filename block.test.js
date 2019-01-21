@@ -2,7 +2,7 @@ const assert = require('assert');
 
 const { findMatchingBrace, getBlocks, normaliseBlocks, reduceBlocks } = require('./block');
 
-describe('blocks', () => {
+describe('get blocks', () => {
   it('should handle no blocks', () => {
     const t = ' ';
     const expected = [{ text: ' ', children: null }];
@@ -225,6 +225,30 @@ describe('normalise blocks', () => {
     const res = normaliseBlocks(blocks);
     assert.deepStrictEqual(res, expected, 'Failed to normalise text outside blocks');
   });
+  it.only('should handle multiple blocks with text', () => {
+    const t = `
+    header
+    function() {
+      const a = 1;
+    }
+    body text
+    function2() {
+      a = 2;
+    }
+    footer text
+    `;
+    const expected = [
+      { text: '\n    header\n    function() ', children: null },
+      { text: '{\n      const a = 1;\n    }', children: null },
+      { text: '\n    body text\n    function2() ', children: null },
+      { text: '{\n      a = 2;\n    }', children: null },
+      { text: '\n    footer text\n    ', children: null },
+    ];
+    const res = normaliseBlocks(getBlocks(t));
+    // normalise
+    console.log('res:', res);
+    assert.deepStrictEqual(res, expected, 'Failed to handle multiple blocks with text');
+  });
 });
 
 describe('reduceBlocks', () => {
@@ -250,7 +274,7 @@ describe('reduceBlocks', () => {
     const expected = '\n{\n  const block1;\n  {\n    const block2;\n  }\n  ' +
       '{\n    const block3;\n  }\n}' +
       '{\n  const block4;\n  {\n    const block5;\n  }\n}';
-    const res = reduceBlocks(t);
+    const res = reduceBlocks('text')(t);
     assert.strictEqual(res, expected, 'Failed to reduce blocks');
   });
 });
@@ -258,7 +282,7 @@ describe('reduceBlocks', () => {
 describe('full block process', () => {
   it('should go there and back again', () => {
     const t = 'some text';
-    const res = reduceBlocks(normaliseBlocks(getBlocks(t)));
+    const res = reduceBlocks('text')(normaliseBlocks(getBlocks(t)));
     assert.strictEqual(t, res, 'Failed there and back again');
   });
   it('should go there and back again 2', () => {
@@ -272,7 +296,7 @@ describe('full block process', () => {
     }
     footer text
     `;
-    const res = reduceBlocks(normaliseBlocks(getBlocks(t)));
+    const res = reduceBlocks('text')(normaliseBlocks(getBlocks(t)));
     assert.strictEqual(t, res, 'Failed there and back again');
   });
 });
