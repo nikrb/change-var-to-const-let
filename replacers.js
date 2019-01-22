@@ -15,44 +15,46 @@ exports.const2let = str => {
   const sections = str.split('</section>');
   return sections.reduce((acc, cur) => {
     const closingSection = cur.includes('<section') ? '</section>' : '';
-    return acc.concat(
-      cur.replace(constre, (match, varname, postVar) => {
-        const isDefinition = postVar === '=';
-        // template string fubar's editor
-        const varassre = new RegExp(
-          '(const|for\\s*\\()?\\s*\\b\(\\.)?' + varname +
-          '\\s*[+\\-\\/*\\^\\%]?=\\s*[\\\'"\\[]?\\s*[\\w]+', 'g');
-        // use let if we have a reassignment
-        const varassresult = cur.match(varassre);
-        let reass = null;
-        if (varassresult) {
-          // not resassignment if it's a redefition, redeclaration or object
-          // member assignment
-          reass = varassresult.filter(
-            s =>
-              s.indexOf('const') === -1 &&
-              s.indexOf('.') === -1 &&
-              s.indexOf('for') === -1
-          );
-        }
-        // and inc/dec operators
-        const varincdecre = new RegExp(
-          `(\\\+\\\+${varname})|(--${varname})|` +
-          `(${varname}--)|(${varname}\\\+\\\+)`
-        );
-        const incdecass = cur.match(varincdecre);
-        if (incdecass !== null) {
-          if (incdecass.length) {
-            return `let ${varname}${isDefinition ? ' =' : ';'}`;
-          }
-        } else if (reass !== null) {
-          if (reass.length) {
-            return `let ${varname}${isDefinition ? ' =' : ';'}`;
-          }
-        }
-        return match;
-      }), closingSection);
+    return acc.concat(replacer(cur, constre), closingSection);
   }, '');
+};
+const replacer = (cur, constre) => {
+  return cur.replace(constre, (match, varname, postVar) => {
+    const isDefinition = postVar === '=';
+    // template string fubar's editor
+    const varassre = new RegExp(
+      '(const|for\\s*\\()?\\s*\\b\(\\.)?' + varname +
+      '\\s*[+\\-\\/*\\^\\%]?=\\s*[\\\'"\\[]?\\s*[\\w]+', 'g');
+    // use let if we have a reassignment
+    const varassresult = cur.match(varassre);
+    let reass = null;
+    if (varassresult) {
+      // not resassignment if it's a redefition, redeclaration or object
+      // member assignment
+      reass = varassresult.filter(
+        s =>
+          s.indexOf('const') === -1 &&
+          s.indexOf('.') === -1 &&
+          s.indexOf('for') === -1
+      );
+    }
+    // and inc/dec operators
+    const varincdecre = new RegExp(
+      `(\\\+\\\+${varname})|(--${varname})|` +
+      `(${varname}--)|(${varname}\\\+\\\+)`
+    );
+    const incdecass = cur.match(varincdecre);
+    if (incdecass !== null) {
+      if (incdecass.length) {
+        return `let ${varname}${isDefinition ? ' =' : ';'}`;
+      }
+    } else if (reass !== null) {
+      if (reass.length) {
+        return `let ${varname}${isDefinition ? ' =' : ';'}`;
+      }
+    }
+    return match;
+  });
 };
 
 const separateMultilineVarsRE = /\s*var\s+[\s\w=,.'"()\[\]]+;/g;
