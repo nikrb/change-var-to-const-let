@@ -225,7 +225,7 @@ describe('normalise blocks', () => {
     const res = normaliseBlocks(blocks);
     assert.deepStrictEqual(res, expected, 'Failed to normalise text outside blocks');
   });
-  it.only('should handle multiple blocks with text', () => {
+  it('should handle multiple blocks with text', () => {
     const t = `
     header
     function() {

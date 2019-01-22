@@ -7,35 +7,35 @@ const {
 } = require('./replacers');
 
 describe('for loop transform', () => {
-  const t = `for (var i = 0; i < ourArr.length; i++) {
-      ourTotal += ourArr[i];
-    }`;
-  const expected = `for (let i = 0; i < ourArr.length; i++) {
-      ourTotal += ourArr[i];
-    }`;
   it('should replace vars in for loops', () => {
+    const t = `for (var i = 0; i < ourArr.length; i++) {
+        ourTotal += ourArr[i];
+      }`;
+    const expected = `for (let i = 0; i < ourArr.length; i++) {
+        ourTotal += ourArr[i];
+      }`;
     const res = fors(t);
     assert.strictEqual(res, expected, 'Failed to replace var in for loops');
   });
-  const t2 = `
-  var a = 1;
-  if (something) {
-    for(var i =0; i<5; i++) {
-      doSomethingElse();
-    }
-  }
-  `;
-  const expected2 = `
-  var a = 1;
-  if (something) {
-    for(let i =0; i<5; i++) {
-      doSomethingElse();
-    }
-  }
-  `;
   it('should preserve indent', () => {
-    const res = fors(t2);
-    assert.strictEqual(res, expected2, 'Failed to preserve indent');
+    const t = `
+    var a = 1;
+    if (something) {
+      for(var i =0; i<5; i++) {
+        doSomethingElse();
+      }
+    }
+    `;
+    const expected = `
+    var a = 1;
+    if (something) {
+      for(let i =0; i<5; i++) {
+        doSomethingElse();
+      }
+    }
+    `;
+    const res = fors(t);
+    assert.strictEqual(res, expected, 'Failed to preserve indent');
   });
 });
 
@@ -422,6 +422,28 @@ Here is the same function from above rewritten to use this new syntax:
     `;
     const res = const2let(t);
     assert.strictEqual(res, expected, 'Failed to respect blank lines');
+  });
+  xit('should respect scope', () => {
+    const t = `
+    function test() {
+      const a = 1;
+    }
+    function test2() {
+      const a = 1;
+      a = 2;
+    }
+    `;
+    const expected = `
+    function test() {
+      const a = 1;
+    }
+    function test2() {
+      let a = 1;
+      a = 2;
+    }
+    `;
+    const res = const2let(t);
+    assert.strictEqual(res, expected, 'Failed to respect scope');
   });
   xit('should respect scope', () => {
     const t = `function pandigitalProducts() {
