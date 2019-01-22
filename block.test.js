@@ -158,30 +158,46 @@ describe('normalise blocks', () => {
   it('should normalise block text', () => {
     const blocks =  [{
         text: '{\n  const block1;\n  {\n    const block2;\n  }\n  {\n    const block3;\n  }\n}',
-        children: [
-          { text: '{\n    const block2;\n  }', children: null },
-          { text: '{\n    const block3;\n  }', children: null },
-        ],
+        part: '{\n  const block1;\n  {\n    const block2;\n  }\n  {\n    const block3;\n  }\n}',
+        children: [{
+          text: '{\n    const block2;\n  }',
+          part: '{\n    const block2;\n  }',
+          children: null,
+        }, {
+          text: '{\n    const block3;\n  }',
+          part: '{\n    const block3;\n  }',
+          children: null,
+        }],
       }, {
         text: '{\n  const block4;\n  {\n    const block5;\n  }\n}',
-        children: [
-          { text: '{\n    const block5;\n  }', children: null },
-        ],
+        part: '{\n  const block4;\n  {\n    const block5;\n  }\n}',
+        children: [{
+          text: '{\n    const block5;\n  }',
+          part: '{\n    const block5;\n  }',
+          children: null,
+        }],
       },
     ];
     const expected =  [{
         text: '{\n  const block1;\n  {\n    const block2;\n  }\n  {\n    const block3;\n  }\n}',
         part: '{\n  const block1;\n  <block0>\n  <block1>\n}',
-        children: [
-          { text: '{\n    const block2;\n  }', children: null },
-          { text: '{\n    const block3;\n  }', children: null },
-        ],
+        children: [{
+          text: '{\n    const block2;\n  }',
+          part: '{\n    const block2;\n  }',
+          children: null
+        }, {
+          text: '{\n    const block3;\n  }',
+          part: '{\n    const block3;\n  }',
+          children: null
+        }],
       }, {
         text: '{\n  const block4;\n  {\n    const block5;\n  }\n}',
         part: '{\n  const block4;\n  <block0>\n}',
-        children: [
-          { text: '{\n    const block5;\n  }', children: null },
-        ],
+        children: [{
+          text: '{\n    const block5;\n  }',
+          part: '{\n    const block5;\n  }',
+          children: null
+        }],
       },
     ];
     const res = normaliseBlocks(blocks);
@@ -206,6 +222,7 @@ describe('normalise blocks', () => {
     ];
     const expected = [{
         text: 'text outside block\n',
+        part: 'text outside block\n',
         children: null,
       }, {
         text: '{\n  const block1;\n  {\n    const block2;\n  }\n  {\n    const block3;\n  }\n}',
@@ -237,16 +254,29 @@ describe('normalise blocks', () => {
     }
     footer text
     `;
-    const expected = [
-      { text: '\n    header\n    function() ', children: null },
-      { text: '{\n      const a = 1;\n    }', children: null },
-      { text: '\n    body text\n    function2() ', children: null },
-      { text: '{\n      a = 2;\n    }', children: null },
-      { text: '\n    footer text\n    ', children: null },
+    const expected = [{
+        text: '\n    header\n    function() ',
+        part: '\n    header\n    function() ',
+        children: null,
+      }, {
+        text: '{\n      const a = 1;\n    }',
+        part: '{\n      const a = 1;\n    }',
+        children: null,
+      }, {
+        text: '\n    body text\n    function2() ',
+        part: '\n    body text\n    function2() ',
+        children: null,
+      }, {
+        text: '{\n      a = 2;\n    }',
+        part: '{\n      a = 2;\n    }',
+        children: null,
+      }, {
+        text: '\n    footer text\n    ',
+        part: '\n    footer text\n    ',
+        children: null,
+      },
     ];
     const res = normaliseBlocks(getBlocks(t));
-    // normalise
-    console.log('res:', res);
     assert.deepStrictEqual(res, expected, 'Failed to handle multiple blocks with text');
   });
 });
@@ -254,49 +284,97 @@ describe('normalise blocks', () => {
 describe('reduceBlocks', () => {
   it('should reduce blocks', () => {
     const t = [{
+        text: '\n      function() ',
+        children: null,
+        part: '\n      function() ',
+        vars: [],
+      }, {
+        children: [{
+          text: '{\n          a++;\n        }',
+          part: '{\n          a++;\n        }',
+          vars: [],
+          children: null
+        }, { text: '\n      ', part: '\n      ', children: null, vars: [] },
+        ],
+        text:
+         '{\n        var a = 1;\n        for (var i = 1; i < 5; i++) {\n          a++;\n        }\n      }',
+        part:
+         '{<block1>  var a = 1;\n        for (var i = 1; i < 5; i++) <block0>\n      }',
+        vars: [
+          { name: 'a', dec: false, reassigned: true, ndx: 10 },
+          { name: 'i', dec: false, reassigned: true, ndx: 34 },
+        ],
+      }, {
+        text: '\n    ', children: null, part: '\n    ', vars: [],
+      }
+    ];
+    const expected = `
+      function() {
+        var a = 1;
+        for (var i = 1; i < 5; i++) {
+          a++;
+        }
+      }
+    `;
+    const res = reduceBlocks('part')(t);
+    assert.deepStrictEqual(res, expected, 'Failed to reduce blocks'); 
+  });
+  it('should reduce blocks 2', () => {
+    const t = [{
         text: '\n',
+        part: '\n',
         children: null,
       }, {
         text: '{\n  const block1;\n  {\n    const block2;\n  }\n  {\n    const block3;\n  }\n}',
         part: '{\n  const block1;\n  <block0>\n  <block1>\n}',
-        children: [
-          { text: '{\n    const block2;\n  }', children: null },
-          { text: '{\n    const block3;\n  }', children: null },
-        ],
+        children: [{
+          text: '{\n    const block2;\n  }',
+          part: '{\n    const block2;\n  }',
+          children: null,
+        }, {
+          text: '{\n    const block3;\n  }',
+          part: '{\n    const block3;\n  }',
+          children: null,
+        }],
       }, {
         text: '{\n  const block4;\n  {\n    const block5;\n  }\n}',
         part: '{\n  const block4;\n  <block0>\n}',
-        children: [
-          { text: '{\n    const block5;\n  }', children: null },
-        ],
+        children: [{
+          text: '{\n    const block5;\n  }',
+          part: '{\n    const block5;\n  }',
+          children: null,
+        }],
       },
     ];
     const expected = '\n{\n  const block1;\n  {\n    const block2;\n  }\n  ' +
       '{\n    const block3;\n  }\n}' +
       '{\n  const block4;\n  {\n    const block5;\n  }\n}';
-    const res = reduceBlocks('text')(t);
-    assert.strictEqual(res, expected, 'Failed to reduce blocks');
+    const res = reduceBlocks('part')(t);
+    assert.strictEqual(res, expected, 'Failed to reduce blocks 2');
   });
 });
 
 describe('full block process', () => {
   it('should go there and back again', () => {
     const t = 'some text';
-    const res = reduceBlocks('text')(normaliseBlocks(getBlocks(t)));
+    const res = reduceBlocks('part')(normaliseBlocks(getBlocks(t)));
     assert.strictEqual(t, res, 'Failed there and back again');
   });
   it('should go there and back again 2', () => {
     const t = `
     header
+    var a = 1;
+    var b = 2;
     function() {
-      const a = 1;
+      var c = 1;
     }
     body text
     function2() {
+      var d = 1;
     }
     footer text
     `;
-    const res = reduceBlocks('text')(normaliseBlocks(getBlocks(t)));
+    const res = reduceBlocks('part')(normaliseBlocks(getBlocks(t)));
     assert.strictEqual(t, res, 'Failed there and back again');
   });
 });

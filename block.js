@@ -26,7 +26,9 @@ const reduceBlocks = fieldname => blocks => {
     if (block.children) {
       const str = block.children.reduce((acc2, b, i) => {
         let childstr = b[fieldname];
-        if (b.children) childstr = reduceBlocks(fieldname)(b.children);
+        if (b.children) {
+          childstr = reduceBlocks(fieldname)(b.children);
+        }
         const blockid = `<block${i}>`;
         return acc2.replace(blockid, b[fieldname]);
       }, block.part);
@@ -40,9 +42,8 @@ exports.reduceBlocks = reduceBlocks;
 // replace duplicate parent text that's in child with blockid '<block#>'
 const normaliseBlocks = blocks => {
   return blocks.map(block => {
-    const newblock = { ...block };
+    const newblock = { ...block, part: block.text };
     if (newblock.children) {
-      newblock.part = newblock.text;
       newblock.children.forEach((child, i) => {
         if (child.children) normaliseBlocks(child.children);
         newblock.part = newblock.part.replace(child.text, `<block${i}>`);
