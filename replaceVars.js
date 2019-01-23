@@ -48,7 +48,6 @@ if (filelist) {
         console.error('file read failed [${filepath}]', e);
       }
       const res = const2let(varconst(separateMultiLineVars(fors(str))));
-      // console.log('results:', res);
       try {
         if (res !== str) {
           const opfile = filepath.replace(/\.md/, '.out.md');
