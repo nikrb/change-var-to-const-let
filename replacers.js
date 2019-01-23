@@ -1,21 +1,95 @@
-const { getIndent, findMatchingBrace, getBlocks } = require('./block');
+const { getIndent, findMatchingBrace, getBlocks, normaliseBlocks, reduceBlocks } = require('./block');
 
 const forre = /(for\s*\()\s*\bvar\b\s+([a-zA-Z0-9]+)/g;
 exports.fors = str => {
   return str.replace(forre, '$1let $2');
 };
 
+/* think we're binning this
 const varre = /var\s+(\w+)/g;
 exports.varconst = str => {
   return str.replace(varre, 'const $1');
 };
+*/
 
-const constre = /const\s+(\w+)\s*([=;])/g;
-exports.const2let = str => {
+const varre = /var\s+(\w+)\s*([=;])/g;
+const findVars = blocks => {
+  return blocks.map(block => {
+    if (block.children) block.children = findVars(block.children);
+    block.vars = [];
+    let matches = varre.exec(block.text);
+    while(matches !== null) {
+      block.vars.push({ name: matches[1], dec: matches[2] === ';', reassigned: false, ndx: matches.index });
+      matches = varre.exec(block.text);
+    }
+    return block;
+  });
+};
+const findReassignment = blocks => {
+  return blocks.map(block => {
+    if (block.children) findReassignment(block.children);
+    const supertext = reduceBlocks('part')(blocks);
+    block.vars.forEach(v => {
+      // and inc/dec operators
+      const varincdecre = new RegExp(
+        `(\\\+\\\+${v.name})|(--${v.name})|` +
+        `(${v.name}--)|(${v.name}\\\+\\\+)`
+      );
+      const incdecass = supertext.match(varincdecre);
+      if (incdecass !== null) {
+        if (incdecass.length) {
+          v.reassigned = true;
+          // return `let ${varname}${isDefinition ? ' =' : ';'}`;
+        }
+      } else {
+        const varassre = new RegExp(
+          '(var|for\\s*\\()?\\s*\\b\(\\.)?' + v.name +
+          '\\s*[+\\-\\/*\\^\\%]?=\\s*[\\\'"\\[]?\\s*[\\w]+', 'g');
+        const varassresult = supertext.match(varassre);
+        let reass;
+        if (varassresult) {
+          // not resassignment if it's a redefition, redeclaration or object
+          // member assignment
+          reass = varassresult.filter(
+            s =>
+              s.indexOf('const') === -1 &&
+              s.indexOf('.') === -1 &&
+              s.indexOf('for') === -1
+          );
+        }
+        if (reass && reass.length) {
+          v.reassigned = true;
+          // return `let ${varname}${isDefinition ? ' =' : ';'}`;
+        }
+      }
+      block.part = block.part.replace('var', v.reassigned ? 'let' : 'const');
+    });
+    return block;
+  });
+};
+
+exports.vars2constlet = str => {
   const sections = str.split('</section>');
-  return sections.reduce((acc, cur) => {
+  return sections.reduce((acc, section) => {
+    const closingSection = section.includes('<section') ? '</section>' : '';
+    const blocks = normaliseBlocks(getBlocks(section));
+    const varblocks = findVars(blocks);
+    const processed = findReassignment(varblocks);
+    return reduceBlocks('part')(processed);
+  }, '');
+};
+/*
+exports.oldconst2let = str => {
+  const sections = str.split('</section>');
+  return sections.reduce((acc, section) => {
     const closingSection = cur.includes('<section') ? '</section>' : '';
-    return acc.concat(replacer(cur, constre), closingSection);
+    const blocks = normalise(getBlocks(section));
+    const withvars = findVarnames(blocks);
+    // foreach block
+    //  find varnames in block text
+    //  search tree for varname assignments
+    //  fix up block text var declarator
+    return acc.concat(replacer(section, constre), closingSection);
   }, '');
 };
 const replacer = (cur, constre) => {
@@ -56,6 +130,7 @@ const replacer = (cur, constre) => {
     return match;
   });
 };
+*/
 
 const separateMultilineVarsRE = /\s*var\s+[\s\w=,.'"()\[\]]+;/g;
 exports.separateMultiLineVars = str => {

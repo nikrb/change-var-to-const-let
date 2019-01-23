@@ -1,3 +1,14 @@
+const printBlocks = (blocks, ndx) => {
+  console.log('blocks:', blocks);
+  if (Array.isArray(ndx)) {
+    ndx.forEach(n => console.log('children:', blocks[n].children));
+  } else {
+    console.log('children:', blocks[ndx].children);
+    console.log('vars:', blocks[ndx].vars);
+  }
+};
+exports.printBlocks = printBlocks;
+
 exports.getIndent = s => {
   const count = s.search(/\w/);
   if (count < 1) { return ''; }
@@ -23,18 +34,15 @@ exports.findMatchingBrace = findMatchingBrace;
 // hydrate block ids with child text
 const reduceBlocks = fieldname => blocks => {
   return blocks.reduce((acc, block) => {
-    if (block.children) {
-      const str = block.children.reduce((acc2, b, i) => {
-        let childstr = b[fieldname];
-        if (b.children) {
-          childstr = reduceBlocks(fieldname)(b.children);
-        }
-        const blockid = `<block${i}>`;
-        return acc2.replace(blockid, b[fieldname]);
-      }, block.part);
-      return acc.concat(str);
+    const blockre = /<block(\d+)>/g;
+    let matches = blockre.exec(block.part);
+    let newpart = block.part;
+    while(matches) {
+      const childstr = reduceBlocks(fieldname)([block.children[matches[1]]]);
+      newpart = newpart.replace(matches[0], childstr);
+      matches = blockre.exec(block.part);
     }
-    return acc.concat(block[fieldname]);
+    return acc.concat(newpart);
   }, '');
 };
 exports.reduceBlocks = reduceBlocks;
@@ -44,9 +52,10 @@ const normaliseBlocks = blocks => {
   return blocks.map(block => {
     const newblock = { ...block, part: block.text };
     if (newblock.children) {
-      newblock.children.forEach((child, i) => {
-        if (child.children) normaliseBlocks(child.children);
+      newblock.children = newblock.children.map((child, i) => {
+        const ab = normaliseBlocks([child])[0];
         newblock.part = newblock.part.replace(child.text, `<block${i}>`);
+        return ab;
       });
     }
     return newblock;

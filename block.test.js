@@ -158,22 +158,17 @@ describe('normalise blocks', () => {
   it('should normalise block text', () => {
     const blocks =  [{
         text: '{\n  const block1;\n  {\n    const block2;\n  }\n  {\n    const block3;\n  }\n}',
-        part: '{\n  const block1;\n  {\n    const block2;\n  }\n  {\n    const block3;\n  }\n}',
         children: [{
           text: '{\n    const block2;\n  }',
-          part: '{\n    const block2;\n  }',
           children: null,
         }, {
           text: '{\n    const block3;\n  }',
-          part: '{\n    const block3;\n  }',
           children: null,
         }],
       }, {
         text: '{\n  const block4;\n  {\n    const block5;\n  }\n}',
-        part: '{\n  const block4;\n  {\n    const block5;\n  }\n}',
         children: [{
           text: '{\n    const block5;\n  }',
-          part: '{\n    const block5;\n  }',
           children: null,
         }],
       },
@@ -227,16 +222,23 @@ describe('normalise blocks', () => {
       }, {
         text: '{\n  const block1;\n  {\n    const block2;\n  }\n  {\n    const block3;\n  }\n}',
         part: '{\n  const block1;\n  <block0>\n  <block1>\n}',
-        children: [
-          { text: '{\n    const block2;\n  }', children: null },
-          { text: '{\n    const block3;\n  }', children: null },
-        ],
+        children: [{
+          text: '{\n    const block2;\n  }',
+          part: '{\n    const block2;\n  }',
+          children: null,
+        }, {
+          text: '{\n    const block3;\n  }',
+          part: '{\n    const block3;\n  }',
+          children: null,
+        }],
       }, {
         text: '{\n  const block4;\n  {\n    const block5;\n  }\n}',
         part: '{\n  const block4;\n  <block0>\n}',
-        children: [
-          { text: '{\n    const block5;\n  }', children: null },
-        ],
+        children: [{
+          text: '{\n    const block5;\n  }',
+          part: '{\n    const block5;\n  }',
+          children: null
+        }],
       },
     ];
     const res = normaliseBlocks(blocks);
@@ -367,6 +369,9 @@ describe('full block process', () => {
     var b = 2;
     function() {
       var c = 1;
+      for (var i = 1; i < 5; i++) {
+        b += 1;
+      }
     }
     body text
     function2() {
@@ -374,7 +379,10 @@ describe('full block process', () => {
     }
     footer text
     `;
-    const res = reduceBlocks('part')(normaliseBlocks(getBlocks(t)));
+    const reducePart = reduceBlocks('part');
+    const blocks = getBlocks(t);
+    const normalised = normaliseBlocks(blocks);
+    const res = reducePart(normalised);
     assert.strictEqual(t, res, 'Failed there and back again');
   });
 });
