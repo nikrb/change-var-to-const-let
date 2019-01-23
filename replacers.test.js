@@ -1,5 +1,6 @@
 const assert = require('assert');
 const {
+  vars2constlet,
   const2let,
   fors,
   separateMultiLineVars,
@@ -118,7 +119,7 @@ describe('split up multi line var definitions', () => {
     );
   });
 });
-
+/*
 describe('transform var to const', () => {
   it('should replace var with const', () => {
     const t = `var a = 1,
@@ -133,15 +134,15 @@ describe('transform var to const', () => {
     assert.strictEqual(res, expected, 'Failed to replace var with const');
   });
 });
-
-describe('change const to let if variable reassigned', () => {
+*/
+describe('change var to let if variable reassigned', () => {
   it('should handle declarations and reassignment', () => {
     const t = `
-      const a;
-      const b = 1;
-      const b2 = 2;
-      const c=3;
-      const c2=4;
+      var a;
+      var b = 1;
+      var b2 = 2;
+      var c=3;
+      var c2=4;
       a = 1;
       b2 = 5;
       c2 = 6;
@@ -151,12 +152,12 @@ describe('change const to let if variable reassigned', () => {
       const b = 1;
       let b2 = 2;
       const c=3;
-      let c2 =4;
+      let c2=4;
       a = 1;
       b2 = 5;
       c2 = 6;
     `;
-    const res = const2let(t);
+    const res = vars2constlet(t);
     assert.strictEqual(
       res,
       expected,
@@ -165,12 +166,12 @@ describe('change const to let if variable reassigned', () => {
   });
   it('should recognise shorthand assignment operators', () => {
     const t = `
-      const a = 1;
-      const b = 2;
-      const c;
-      const d = 4;
-      const e = 5;
-      const f = 5.5;
+      var a = 1;
+      var b = 2;
+      var c;
+      var d = 4;
+      var e = 5;
+      var f = 5.5;
       a += 6;
       b -= 7;
       c *= 8;
@@ -192,7 +193,7 @@ describe('change const to let if variable reassigned', () => {
       e ^= 10;
       f %= 11;
     `;
-    const res = const2let(t);
+    const res = vars2constlet(t);
     assert.strictEqual(
       res,
       expected,
@@ -201,10 +202,10 @@ describe('change const to let if variable reassigned', () => {
   });
   it('should recognise increment/decrement operators as assignment', () => {
     const t = `
-    const a = 1;
-    const b = 2;
-    const c = 3;
-    const d = 4;
+    var a = 1;
+    var b = 2;
+    var c = 3;
+    var d = 4;
     ++a;
     --b;
     c++;
@@ -220,7 +221,7 @@ describe('change const to let if variable reassigned', () => {
     c++;
     d--;
     `;
-    const res = const2let(t);
+    const res = vars2constlet(t);
     assert.strictEqual(
       res,
       expected,
@@ -229,9 +230,9 @@ describe('change const to let if variable reassigned', () => {
   });
   it('should recognise array destructure reassignment', () => {
     const t = `
-    const a = 1;
-    const b = 2;
-    const c = 3;
+    var a = 1;
+    var b = 2;
+    var c = 3;
     c += a;
     a = [b, b=b+a][0];
     `;
@@ -242,7 +243,7 @@ describe('change const to let if variable reassigned', () => {
     c += a;
     a = [b, b=b+a][0];
     `;
-    const res = const2let(t);
+    const res = vars2constlet(t);
     assert.strictEqual(
       res,
       expected,
@@ -251,10 +252,10 @@ describe('change const to let if variable reassigned', () => {
   });
   it('should allow separate declaration of for loop iterator', () => {
     const t = `
-      const i;
-      const ch;
-      const chars = input.split(' ');
-      const chars2 = input.split(" ");
+      var i;
+      var ch;
+      var chars = input.split(' ');
+      var chars2 = input.split(" ");
       for (i = 1; i < 6; i++) {
         ch = chars.splice(i, 1);
       }
@@ -268,7 +269,7 @@ describe('change const to let if variable reassigned', () => {
         ch = chars.splice(i, 1);
       }
     `;
-    const res = const2let(t);
+    const res = vars2constlet(t);
     assert.strictEqual(
       res,
       expected,
@@ -280,14 +281,14 @@ describe('change const to let if variable reassigned', () => {
     const t = `
 <section id='challengeSeed'>
   <div id='js-seed'>
-    const ourArr = [ 9, 10, 11, 12];
-    const ourTotal = 0;
+    var ourArr = [ 9, 10, 11, 12];
+    var ourTotal = 0;
   </div>
 </section>
 
 <section id='solution'>
-  const ourArr = [ 9, 10, 11, 12];
-  const ourTotal = 0;
+  var ourArr = [ 9, 10, 11, 12];
+  var ourTotal = 0;
 
   ourTotal += 1;
 </section>
@@ -307,7 +308,7 @@ describe('change const to let if variable reassigned', () => {
   ourTotal += 1;
 </section>
 `;
-    const res = const2let(t);
+    const res = vars2constlet(t);
     assert.strictEqual(
       res,
       expected,
@@ -321,11 +322,11 @@ describe('change const to let if variable reassigned', () => {
 <section id='description'>
 ES6 adds some nice support for easily defining object literals.
 Consider the following code:
-<blockquote>const getMousePosition = (x, y) => ({<br>&nbsp;&nbsp;x: x,<br>&nbsp;&nbsp;y: y<br>});</blockquote>
+<blockquote>var getMousePosition = (x, y) => ({<br>&nbsp;&nbsp;x: x,<br>&nbsp;&nbsp;y: y<br>});</blockquote>
 <code>getMousePosition</code> is a simple function that returns an object containing two fields.
 ES6 provides the syntactic sugar to eliminate the redundancy of having to write <code>x: x</code>. You can simply write <code>x</code> once, and it will be converted to<code>x: x</code> (or something equivalent) under the hood.
 Here is the same function from above rewritten to use this new syntax:
-<blockquote>const getMousePosition = (x, y) => ({ x, y });</blockquote>
+<blockquote>var getMousePosition = (x, y) => ({ x, y });</blockquote>
 </section>`;
     const expected = `
 ## Description
@@ -339,15 +340,15 @@ Here is the same function from above rewritten to use this new syntax:
 <blockquote>const getMousePosition = (x, y) => ({ x, y });</blockquote>
 </section>`;
     /* eslint-enable max-len */
-    const res = const2let(t);
+    const res = vars2constlet(t);
     assert.strictEqual(res, expected,
       'Failed to preserve const when reassignment is also a definition');
   });
   it('should preserve const for fat arrow parameter (e.g. socket => // ...)',
     () => {
     const t = `
-    const a = 1;
-    const b = a => {
+    var a = 1;
+    var b = a => {
       doSomething();
     }`;
     const expected = `
@@ -355,27 +356,27 @@ Here is the same function from above rewritten to use this new syntax:
     const b = a => {
       doSomething();
     }`;
-    const res = const2let(t);
+    const res = vars2constlet(t);
     assert.strictEqual(res, expected,
       'Failed to catch fat arrow parameter masquerading as assignment');
   });
   it('should preserve const for future assignment with same suffix', () => {
     const t = `
-      const f = 1;
-      const af = 2;
+      var f = 1;
+      var af = 2;
     `;
     const expected = `
       const f = 1;
       const af = 2;
     `;
-    const res = const2let(t);
+    const res = vars2constlet(t);
     assert.strictEqual(res, expected, 'Failed to catch var with same suffix');
   });
   it('should preserve const for object member assignment with same name',
     () => {
     const t = `
-      const change = 5;
-      const obj = {};
+      var change = 5;
+      var obj = {};
       obj.change = change;
     `;
     const expected = `
@@ -383,7 +384,7 @@ Here is the same function from above rewritten to use this new syntax:
       const obj = {};
       obj.change = change;
     `;
-    const res = const2let(t);
+    const res = vars2constlet(t);
     assert.strictEqual(
       res,
       expected,
@@ -391,7 +392,7 @@ Here is the same function from above rewritten to use this new syntax:
   });
   it('should preserve const for react prop assignment', () => {
     const t = `
-      const store = Redux.createStore(messageReducer);
+      var store = Redux.createStore(messageReducer);
       // ... then in render function
       return (
         <Provider store = {store} >
@@ -408,7 +409,7 @@ Here is the same function from above rewritten to use this new syntax:
         </Provider>
       );
     `;
-    const res = const2let(t);
+    const res = vars2constlet(t);
     assert.strictEqual(res, expected, 'Failed to catch react prop assignment');
   });
   it('should respect blank lines', () => {
@@ -420,17 +421,17 @@ Here is the same function from above rewritten to use this new syntax:
     <section>
     </section>
     `;
-    const res = const2let(t);
+    const res = vars2constlet(t);
     assert.strictEqual(res, expected, 'Failed to respect blank lines');
   });
-  xit('should respect scope', () => {
+  it('should respect scope', () => {
     const t = `
     function test() {
-      const a = 1;
+      var a = 1;
     }
     function test2() {
-      const a = 1;
-      a = 2;
+      var a = 2;
+      a = 3;
     }
     `;
     const expected = `
@@ -438,17 +439,17 @@ Here is the same function from above rewritten to use this new syntax:
       const a = 1;
     }
     function test2() {
-      let a = 1;
-      a = 2;
+      let a = 2;
+      a = 3;
     }
     `;
-    const res = const2let(t);
+    const res = vars2constlet(t);
     assert.strictEqual(res, expected, 'Failed to respect scope');
   });
-  xit('should respect scope', () => {
+  it('should respect scope', () => {
     const t = `function pandigitalProducts() {
       function is1to9Pandigital(...numbers) {
-        const digitStr = concatenateNums(...numbers);
+        var digitStr = concatenateNums(...numbers);
         // check if length is 9
         if (digitStr.length !== 9) {
           return false;
@@ -469,7 +470,7 @@ Here is the same function from above rewritten to use this new syntax:
         return digitStr;
       }
 
-      const pandigitalNums = [];
+      var pandigitalNums = [];
       let sum = 0;
       for (let mult1 = 2; mult1 < 9876; mult1++) {
         let mult2 = 123;
@@ -518,9 +519,63 @@ Here is the same function from above rewritten to use this new syntax:
           mult2++;
         }
       }
+      return sum;
     }`;
-    const res = const2let(t);
+    const res = vars2constlet(t);
     assert.strictEqual(res, expected, 'Failed to respect scope 2');
+  });
+});
+
+describe('convert var to const or let', () => {
+  it('should convert var to let when reassigned', () => {
+    const t = `
+      var a = 1;
+      a = 2;
+    `;
+    const expected = `
+      let a = 1;
+      a = 2;
+    `;
+    const res = vars2constlet(t);
+    assert.strictEqual(res, expected, 'Failed to convert var to let for reassigned var');
+  });
+  it('should convert var to let when reassigned in sibling block', () => {
+    const t = `
+      var a = 1;
+      function() {
+        a = 2;
+      }
+    `;
+    const expected = `
+      let a = 1;
+      function() {
+        a = 2;
+      }
+    `;
+    const res = vars2constlet(t);
+    assert.strictEqual(res, expected, 'Failed to convert var to let for sibling block');
+  });
+  it('should convert var to let when reassigned in child block', () => {
+    const t = `
+      function() {
+        var a = 1;
+        var b;
+        for (var i = 1; i < 5; i++) {
+          a++;
+        }
+      }
+    `;
+    const expected = `
+      function() {
+        let a = 1;
+        const b;
+        for (let i = 1; i < 5; i++) {
+          a++;
+        }
+      }
+    `;
+    const res = vars2constlet(t);
+    assert.strictEqual(res, expected, 'Failed to convert var to let reassigned in child block');
   });
 });
 
