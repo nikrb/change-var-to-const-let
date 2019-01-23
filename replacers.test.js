@@ -40,6 +40,15 @@ describe('for loop transform', () => {
   });
 });
 
+describe('ignoring var in words', () => {
+  it('should ignore var as part of a word', () => {
+    const t = `<hr>Start by adding a variable to keep track of the users just before where you are currently listening for connections.     <code>var currentUsers = 0;</code>`;
+    const expected = `<hr>Start by adding a variable to keep track of the users just before where you are currently listening for connections.     <code>const currentUsers = 0;</code>`;
+    const res = vars2constlet(t);
+    assert.strictEqual(res, expected, 'Failed to catch var in words');
+  });
+});
+
 describe('split up multi line var definitions', () => {
   it('should separate multiline var definitions', () => {
     const t = `
@@ -119,22 +128,6 @@ describe('split up multi line var definitions', () => {
     );
   });
 });
-/*
-describe('transform var to const', () => {
-  it('should replace var with const', () => {
-    const t = `var a = 1,
-          b = 2;
-      var a = 1;
-      var b = 2;`;
-    const expected = `const a = 1,
-          b = 2;
-      const a = 1;
-      const b = 2;`;
-    const res = varconst(t);
-    assert.strictEqual(res, expected, 'Failed to replace var with const');
-  });
-});
-*/
 describe('change var to let if variable reassigned', () => {
   it('should handle declarations and reassignment', () => {
     const t = `

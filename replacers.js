@@ -40,7 +40,7 @@ const findReassignment = blocks => {
         }
       } else {
         const varassre = new RegExp(
-          '(const|let|var|for\\s*\\()?\\s*\\b\(\\.)?' + v.name +
+          '(var\\b|for\\s*\\()?\\s*\\b(\\.)?' + v.name +
           '\\s*[+\\-\\/*\\^\\%]?=\\s*[\\\'"\\[]?\\s*[\\w]+', 'g');
         const varassresult = supertext.match(varassre);
         let reass;
@@ -59,7 +59,7 @@ const findReassignment = blocks => {
           v.reassigned = true;
         }
       }
-      block.part = block.part.replace('var', v.reassigned ? 'let' : 'const');
+      block.part = block.part.replace(/var\b/, v.reassigned ? 'let' : 'const');
     });
     return block;
   });
