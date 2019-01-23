@@ -1,11 +1,9 @@
-const printBlocks = (blocks, ndx) => {
-  console.log('blocks:', blocks);
-  if (Array.isArray(ndx)) {
-    ndx.forEach(n => console.log('children:', blocks[n].children));
-  } else {
-    console.log('children:', blocks[ndx].children);
-    console.log('vars:', blocks[ndx].vars);
-  }
+const printBlocks = (blocks, desc) => {
+  if (desc) console.log(desc);
+  blocks.forEach(block => {
+    console.log(block);
+    if (block.children) printBlocks(block.children);
+  });
 };
 exports.printBlocks = printBlocks;
 
