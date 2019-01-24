@@ -175,7 +175,7 @@ describe('normalise blocks', () => {
     ];
     const expected =  [{
         text: '{\n  const block1;\n  {\n    const block2;\n  }\n  {\n    const block3;\n  }\n}',
-        part: '{\n  const block1;\n  <block0>\n  <block1>\n}',
+        part: '{\n  const block1;\n  bl0ck\n  bl1ck\n}',
         children: [{
           text: '{\n    const block2;\n  }',
           part: '{\n    const block2;\n  }',
@@ -187,7 +187,7 @@ describe('normalise blocks', () => {
         }],
       }, {
         text: '{\n  const block4;\n  {\n    const block5;\n  }\n}',
-        part: '{\n  const block4;\n  <block0>\n}',
+        part: '{\n  const block4;\n  bl0ck\n}',
         children: [{
           text: '{\n    const block5;\n  }',
           part: '{\n    const block5;\n  }',
@@ -221,7 +221,7 @@ describe('normalise blocks', () => {
         children: null,
       }, {
         text: '{\n  const block1;\n  {\n    const block2;\n  }\n  {\n    const block3;\n  }\n}',
-        part: '{\n  const block1;\n  <block0>\n  <block1>\n}',
+        part: '{\n  const block1;\n  bl0ck\n  bl1ck\n}',
         children: [{
           text: '{\n    const block2;\n  }',
           part: '{\n    const block2;\n  }',
@@ -233,7 +233,7 @@ describe('normalise blocks', () => {
         }],
       }, {
         text: '{\n  const block4;\n  {\n    const block5;\n  }\n}',
-        part: '{\n  const block4;\n  <block0>\n}',
+        part: '{\n  const block4;\n  bl0ck\n}',
         children: [{
           text: '{\n    const block5;\n  }',
           part: '{\n    const block5;\n  }',
@@ -301,7 +301,7 @@ describe('reduceBlocks', () => {
         text:
          '{\n        var a = 1;\n        for (var i = 1; i < 5; i++) {\n          a++;\n        }\n      }',
         part:
-         '{<block1>  var a = 1;\n        for (var i = 1; i < 5; i++) <block0>\n      }',
+         '{bl1ck  var a = 1;\n        for (var i = 1; i < 5; i++) bl0ck\n      }',
         vars: [
           { name: 'a', dec: false, reassigned: true, ndx: 10 },
           { name: 'i', dec: false, reassigned: true, ndx: 34 },
@@ -328,7 +328,7 @@ describe('reduceBlocks', () => {
         children: null,
       }, {
         text: '{\n  const block1;\n  {\n    const block2;\n  }\n  {\n    const block3;\n  }\n}',
-        part: '{\n  const block1;\n  <block0>\n  <block1>\n}',
+        part: '{\n  const block1;\n  bl0ck\n  bl1ck\n}',
         children: [{
           text: '{\n    const block2;\n  }',
           part: '{\n    const block2;\n  }',
@@ -340,7 +340,7 @@ describe('reduceBlocks', () => {
         }],
       }, {
         text: '{\n  const block4;\n  {\n    const block5;\n  }\n}',
-        part: '{\n  const block4;\n  <block0>\n}',
+        part: '{\n  const block4;\n  bl0ck\n}',
         children: [{
           text: '{\n    const block5;\n  }',
           part: '{\n    const block5;\n  }',

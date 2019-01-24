@@ -32,7 +32,7 @@ exports.findMatchingBrace = findMatchingBrace;
 // hydrate block ids with child text
 const reduceBlocks = fieldname => blocks => {
   return blocks.reduce((acc, block) => {
-    const blockre = /<block(\d+)>/g;
+    const blockre = /bl(\d+)ck/g;
     let matches = blockre.exec(block.part);
     let newpart = block.part;
     while(matches) {
@@ -45,14 +45,16 @@ const reduceBlocks = fieldname => blocks => {
 };
 exports.reduceBlocks = reduceBlocks;
 
-// replace duplicate parent text that's in child with blockid '<block#>'
+// replace duplicate parent text that's in child with blockid 'bl#ck'
+// <block#> was all very nice, but > gets picked up from html close
+// so let's try bl#ck, shouldn't think that will come up naturally
 const normaliseBlocks = blocks => {
   return blocks.map(block => {
     const newblock = { ...block, part: block.text };
     if (newblock.children) {
       newblock.children = newblock.children.map((child, i) => {
         const ab = normaliseBlocks([child])[0];
-        newblock.part = newblock.part.replace(child.text, `<block${i}>`);
+        newblock.part = newblock.part.replace(child.text, `bl${i}ck`);
         return ab;
       });
     }
