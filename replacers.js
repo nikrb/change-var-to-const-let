@@ -1,4 +1,5 @@
 const { getIndent, findMatchingBrace, getBlocks, normaliseBlocks, reduceBlocks } = require('./block');
+// const { printBlocks } = require('./block');
 
 const forre = /(for\s*\()\s*\bvar\b\s+([a-zA-Z0-9]+)/g;
 exports.fors = str => {
@@ -45,7 +46,7 @@ const findReassignment = blocks => {
         const varassresult = supertext.match(varassre);
         let reass;
         if (varassresult) {
-          // not resassignment if it's a redefition, redeclaration or object
+          // not resassignment if it's a redefinition, redeclaration or object
           // member assignment
           reass = varassresult.filter(
             s => s.indexOf('var') === -1 &&
@@ -69,18 +70,40 @@ exports.vars2constlet = str => {
   const sections = str.split('</section>');
   return sections.reduce((acc, section) => {
     const closingSection = section.includes('<section') ? '</section>' : '';
-    const blocks = normaliseBlocks(getBlocks(section));
-    const varblocks = findVars(blocks);
+    const blocks = getBlocks(section);
+    const normalised = normaliseBlocks(blocks);
+    const varblocks = findVars(normalised);
     const processed = findReassignment(varblocks);
     return acc.concat(reduceBlocks('part')(processed), closingSection);
   }, '');
 };
 
+const splitVarDecs = str => {
+  const bits = [];
+  let count = 0;
+  let i = 0;
+  let lastNdx = 0;
+  while(i < str.length) {
+    if (str[i] === '[' || str[i] === '(') count++;
+    if (str[i] === ']' || str[i] === ')') count--;
+    if (str[i] === ',' && count === 0) {
+      bits.push(str.substring(lastNdx, i));
+      lastNdx = i + 1;
+      i += 1;
+    }
+    i += 1;
+  }
+  bits.push(str.substring(lastNdx));
+  return bits;
+};
+exports.splitVarDecs = splitVarDecs;
+
+// const separateMultilineVarsRE = /\s*var\s+[\s\w=,.'"()\[\]]+;/g;
 const separateMultilineVarsRE = /\s*var\s+[\s\w=,.'"()\[\]]+;/g;
 exports.separateMultiLineVars = str => {
   return str.replace(separateMultilineVarsRE, match => {
     const indent = getIndent(match);
-    const bits = match.split(',');
+    const bits = splitVarDecs(match);
     if (bits.length > 1) {
       const separateLines = bits.reduce((acc, cur, ndx, arr) => {
         const c = cur.trim();

@@ -1,10 +1,9 @@
 const assert = require('assert');
 const {
+  splitVarDecs,
   vars2constlet,
-  const2let,
   fors,
   separateMultiLineVars,
-  varconst,
 } = require('./replacers');
 
 describe('for loop transform', () => {
@@ -46,6 +45,15 @@ describe('ignoring var in words', () => {
     const expected = `<hr>Start by adding a variable to keep track of the users just before where you are currently listening for connections.     <code>const currentUsers = 0;</code>`;
     const res = vars2constlet(t);
     assert.strictEqual(res, expected, 'Failed to catch var in words');
+  });
+});
+
+describe('split var decs', () => {
+  it('should split var decs', () => {
+    const t = `var a = [], b = [];`;
+    const expected = ['var a = []', ' b = [];'];
+    const res = splitVarDecs(t);
+    assert.deepStrictEqual(res, expected, 'Failed to split var decs');
   });
 });
 
@@ -126,6 +134,13 @@ describe('split up multi line var definitions', () => {
       expected,
       'Failed to handle mixed declarations and definitions'
     );
+  });
+  it('should not split function call initialisers', () => {
+    const t = `var hash = bcrypt.hashSync(req.body.password, 12);`;
+    const expected = `var hash = bcrypt.hashSync(req.body.password, 12);`;
+    const res = separateMultiLineVars(t);
+    console.log('res:', res);
+    assert.strictEqual(res, expected, 'Failed to handle function call initialiser');
   });
 });
 describe('change var to let if variable reassigned', () => {
@@ -405,6 +420,27 @@ Here is the same function from above rewritten to use this new syntax:
     const res = vars2constlet(t);
     assert.strictEqual(res, expected, 'Failed to catch react prop assignment');
   });
+  // this covers html closing > caught from <block#> - which is now bl#ck
+  it('should preserve react key prop', () => {
+    const t =`<ul>
+  {this.state.messages.map( (message, idx) => {
+      return (
+         <li key={idx}>{message}</li>
+      )
+    })
+  }
+</ul>`;
+    const expected =`<ul>
+  {this.state.messages.map( (message, idx) => {
+      return (
+         <li key={idx}>{message}</li>
+      )
+    })
+  }
+</ul>`;
+    const res = vars2constlet(t);
+    assert.strictEqual(res, expected, 'Failed to preserve react prop key');
+  });
   it('should respect blank lines', () => {
     const t = `
     <section>
@@ -569,6 +605,14 @@ describe('convert var to const or let', () => {
     `;
     const res = vars2constlet(t);
     assert.strictEqual(res, expected, 'Failed to convert var to let reassigned in child block');
+  });
+  it('should convert var to const for function call and array initialisers', () => {
+    const t = `var hash = bcrypt.hashSync(req.body.password, 12);
+      var hash2 = [[1,2], [3,4]]`;
+    const expected = `const hash = bcrypt.hashSync(req.body.password, 12);
+      const hash2 = [[1,2], [3,4]]`;
+    const res = vars2constlet(t);
+    assert.strictEqual(res, expected, 'Failed to handle function call initialiser');
   });
 });
 
