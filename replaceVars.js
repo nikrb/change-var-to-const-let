@@ -15,10 +15,9 @@ const globby = require('globby');
 require('dotenv').config();
 
 const {
-  const2let,
   fors,
   separateMultiLineVars,
-  varconst
+  vars2constlet,
 } = require('./replacers');
 
 let filelist;
@@ -47,7 +46,7 @@ if (filelist) {
       } catch (e) {
         console.error('file read failed [${filepath}]', e);
       }
-      const res = const2let(varconst(separateMultiLineVars(fors(str))));
+      const res = vars2constlet(separateMultiLineVars(fors(str)));
       try {
         if (res !== str) {
           const opfile = filepath.replace(/\.md/, '.out.md');
