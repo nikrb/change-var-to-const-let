@@ -82,6 +82,21 @@ describe('split up multi line var definitions', () => {
     const res = separateMultiLineVars(t);
     assert.strictEqual(res, expected, 'Failed to separate multiline defs');
   });
+  it('should handle no semi-colons', () => {
+    const t = `
+    var a, o
+    a = 1;
+    o = 2;
+    `;
+    const expected = `
+    var a;
+    var o
+    a = 1;
+    o = 2;
+    `;
+    const res = separateMultiLineVars(t);
+    assert.strictEqual(res, expected, 'Failed to handle no semi-colons');
+  });
   it('should not transform for loops', () => {
     const t = `for (var i = 0; i<arr.lenth; i++){
       doSomething();
@@ -139,7 +154,6 @@ describe('split up multi line var definitions', () => {
     const t = `var hash = bcrypt.hashSync(req.body.password, 12);`;
     const expected = `var hash = bcrypt.hashSync(req.body.password, 12);`;
     const res = separateMultiLineVars(t);
-    console.log('res:', res);
     assert.strictEqual(res, expected, 'Failed to handle function call initialiser');
   });
 });
@@ -475,7 +489,7 @@ Here is the same function from above rewritten to use this new syntax:
     const res = vars2constlet(t);
     assert.strictEqual(res, expected, 'Failed to respect scope');
   });
-  it('should respect scope', () => {
+  it('should respect scope live test', () => {
     const t = `function pandigitalProducts() {
       function is1to9Pandigital(...numbers) {
         var digitStr = concatenateNums(...numbers);
@@ -551,7 +565,7 @@ Here is the same function from above rewritten to use this new syntax:
       return sum;
     }`;
     const res = vars2constlet(t);
-    assert.strictEqual(res, expected, 'Failed to respect scope 2');
+    assert.strictEqual(res, expected, 'Failed to respect scope live test');
   });
 });
 
@@ -613,6 +627,23 @@ describe('convert var to const or let', () => {
       const hash2 = [[1,2], [3,4]]`;
     const res = vars2constlet(t);
     assert.strictEqual(res, expected, 'Failed to handle function call initialiser');
+  });
+});
+
+describe('special character handling', () => {
+  it('should handle dollar character', () => {
+    const t = `
+    function formatText (input, justification) {
+      let x, y, max, cols = 0, diff, left, right;
+      for (x = 0; x < input.length; x++) {
+        input[x] = input[x].split('$');
+        if (input[x].length > cols) {
+          cols = input[x].length;
+        }
+      }
+    }`;
+    const res = vars2constlet(t);
+    assert.equal(res, t, 'Failed latest etst');
   });
 });
 
