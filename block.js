@@ -1,5 +1,5 @@
 const printBlocks = (blocks, desc) => {
-  if (desc) console.log(desc);
+  desc ? console.log(desc) : console.log('Children');
   blocks.forEach(block => {
     console.log(block);
     if (block.children) printBlocks(block.children);
@@ -31,12 +31,16 @@ exports.findMatchingBrace = findMatchingBrace;
 // reduce the blocks back to a string.
 // hydrate block ids with child text
 const reduceBlocks = fieldname => blocks => {
-  return blocks.reduce((acc, block) => {
+  return blocks.reduce((acc, block, i) => {
     const blockre = /bl(\d+)ck/g;
     let matches = blockre.exec(block.part);
     let newpart = block.part;
     while(matches) {
-      const childstr = reduceBlocks(fieldname)([block.children[matches[1]]]);
+      let childstr = reduceBlocks(fieldname)([block.children[matches[1]]]);
+      // check for dollar sign
+      if (childstr.indexOf('$') > -1) {
+        childstr = childstr.replace(/\$/g, '$$$$');
+      }
       newpart = newpart.replace(matches[0], childstr);
       matches = blockre.exec(block.part);
     }
