@@ -250,6 +250,14 @@ describe('change var to let if variable reassigned', () => {
       'Failed to recognise increment/decrement operators'
     );
   });
+  it('should allow spaces between variable and increment operator', () => {
+    const t = `var i = 0;
+    i ++`;
+    const expected = `let i = 0;
+    i ++`;
+    const res = vars2constlet(t);
+    assert.strictEqual(res, expected, 'Failed to allow space between var and inc operator');
+  });
   it('should recognise array destructure reassignment', () => {
     const t = `
     var a = 1;

@@ -31,8 +31,8 @@ const findReassignment = blocks => {
     block.vars.forEach(v => {
       // inc/dec operators
       const varincdecre = new RegExp(
-        `(\\\+\\\+${v.name})|(--${v.name})|` +
-        `(${v.name}--)|(${v.name}\\\+\\\+)`
+        `(\\\+\\\+\\\s*${v.name})|(--\\\s*${v.name})|` +
+        `(${v.name}\\\s*--)|(${v.name}\\\s*\\\+\\\+)`
       );
       const incdecass = supertext.match(varincdecre);
       if (incdecass !== null) {
