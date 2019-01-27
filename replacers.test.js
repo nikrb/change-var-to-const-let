@@ -3,7 +3,7 @@ const {
   splitVarDecs,
   vars2constlet,
   fors,
-  separateMultiLineVars,
+  separateMultilineVars,
 } = require('./replacers');
 
 describe('for loop transform', () => {
@@ -79,7 +79,7 @@ describe('split up multi line var definitions', () => {
     var c3 = 3.8;
     var c4 = 3.9;
     var d = 4;`;
-    const res = separateMultiLineVars(t);
+    const res = separateMultilineVars(t);
     assert.strictEqual(res, expected, 'Failed to separate multiline defs');
   });
   it('should handle no semi-colons', () => {
@@ -94,7 +94,7 @@ describe('split up multi line var definitions', () => {
     a = 1;
     o = 2;
     `;
-    const res = separateMultiLineVars(t);
+    const res = separateMultilineVars(t);
     assert.strictEqual(res, expected, 'Failed to handle no semi-colons');
   });
   it('should not transform for loops', () => {
@@ -104,7 +104,7 @@ describe('split up multi line var definitions', () => {
     const expected = `for (var i = 0; i<arr.lenth; i++){
       doSomething();
     }`;
-    const res = separateMultiLineVars(t);
+    const res = separateMultilineVars(t);
     assert.strictEqual(res, expected, 'Failed to NOT transform for loop');
   });
   it('should preserve indent on multiline declarations and definitions', () => {
@@ -123,7 +123,7 @@ describe('split up multi line var definitions', () => {
     var f;
     var g;
     `;
-    const res = separateMultiLineVars(t);
+    const res = separateMultilineVars(t);
     assert.strictEqual(res, expected,
       'Failed to preserve indent on multiline decs and defs');
   });
@@ -143,7 +143,7 @@ describe('split up multi line var definitions', () => {
         ch = chars.splice(i, 1);
       }
     `;
-    const res = separateMultiLineVars(t);
+    const res = separateMultilineVars(t);
     assert.strictEqual(
       res,
       expected,
@@ -153,7 +153,7 @@ describe('split up multi line var definitions', () => {
   it('should not split function call initialisers', () => {
     const t = `var hash = bcrypt.hashSync(req.body.password, 12);`;
     const expected = `var hash = bcrypt.hashSync(req.body.password, 12);`;
-    const res = separateMultiLineVars(t);
+    const res = separateMultilineVars(t);
     assert.strictEqual(res, expected, 'Failed to handle function call initialiser');
   });
 });
@@ -644,6 +644,50 @@ describe('special character handling', () => {
     }`;
     const res = vars2constlet(t);
     assert.equal(res, t, 'Failed latest etst');
+  });
+});
+
+describe('multiline defs with maths operators', () => {
+  it('latest test', () => {
+    const t = `function spiralArray (n) {
+      var arr = Array(n),
+          x = 0, y = n,
+          total = n * n--,
+          dx = 1, dy = 0,
+          i = 0, j = 0;
+      while (y) arr[--y] = [];
+      while (i < total) {
+          arr[y][x] = i++;
+          x += dx; y += dy;
+          if (++j == n) {
+              if (dy < 0) {x++; y++; n -= 2}
+              j = dx; dx = -dy; dy = j; j = 0;
+         }
+      }
+      return arr;
+    }`;
+    const expected = `function spiralArray (n) {
+      const arr = Array(n);
+      let x = 0;
+      let y = n;
+      const total = n * n--;
+      let dx = 1;
+      let dy = 0;
+      let i = 0;
+      let j = 0;
+      while (y) arr[--y] = [];
+      while (i < total) {
+          arr[y][x] = i++;
+          x += dx; y += dy;
+          if (++j == n) {
+              if (dy < 0) {x++; y++; n -= 2}
+              j = dx; dx = -dy; dy = j; j = 0;
+         }
+      }
+      return arr;
+    }`;
+    const res = vars2constlet(separateMultilineVars(t));
+    assert.strictEqual(res, expected, 'Failed latest test');
   });
 });
 
