@@ -16,7 +16,7 @@ require('dotenv').config();
 
 const {
   fors,
-  separateMultiLineVars,
+  separateMultilineVars,
   vars2constlet,
 } = require('./replacers');
 
@@ -46,7 +46,7 @@ if (filelist) {
       } catch (e) {
         console.error('file read failed [${filepath}]', e);
       }
-      const res = vars2constlet(separateMultiLineVars(fors(str)));
+      const res = vars2constlet(separateMultilineVars(fors(str)));
       try {
         if (res !== str) {
           const opfile = filepath.replace(/\.md/, '.out.md');
