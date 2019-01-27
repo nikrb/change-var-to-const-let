@@ -567,6 +567,14 @@ Here is the same function from above rewritten to use this new syntax:
     const res = vars2constlet(t);
     assert.strictEqual(res, expected, 'Failed to respect scope live test');
   });
+  it('should handle logical not operator in assignment', () => {
+    const t = `var a = true;
+    a = !b`;
+    const expected = `let a = true;
+    a = !b`;
+    const res = vars2constlet(t);
+    assert.strictEqual(res, expected, 'Failed to handle logical not operator in assignment');
+  });
 });
 
 describe('convert var to const or let', () => {
@@ -648,7 +656,7 @@ describe('special character handling', () => {
 });
 
 describe('multiline defs with maths operators', () => {
-  it('latest test', () => {
+  it('should handle maths operator initialisers', () => {
     const t = `function spiralArray (n) {
       var arr = Array(n),
           x = 0, y = n,
@@ -687,7 +695,7 @@ describe('multiline defs with maths operators', () => {
       return arr;
     }`;
     const res = vars2constlet(separateMultilineVars(t));
-    assert.strictEqual(res, expected, 'Failed latest test');
+    assert.strictEqual(res, expected, 'Failed to handle maths operators in initialisers');
   });
 });
 

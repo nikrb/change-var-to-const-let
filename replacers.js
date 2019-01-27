@@ -42,7 +42,7 @@ const findReassignment = blocks => {
       } else {
         const varassre = new RegExp(
           '(var\\b|for\\s*\\()?\\s*\\b(\\.)?' + v.name +
-          '\\s*[+\\-\\/*\\^\\%]?=\\s*[\\\'"\\[]?\\s*[\\-\\w]+', 'g');
+          '\\s*[+\\-\\/*\\^\\%]?=\\s*[\\\'"\\[]?\\s*[!\\-\\w]+', 'g');
         const varassresult = supertext.match(varassre);
         let reass;
         if (varassresult) {
