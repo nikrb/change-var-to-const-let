@@ -98,7 +98,7 @@ const splitVarDecs = str => {
 };
 exports.splitVarDecs = splitVarDecs;
 
-const separateMultilineVarsRE = /\s*var\s+[\s\w=,.'"()\[\]]+;/g;
+const separateMultilineVarsRE = /\s*var\s+[\s\w=,.'"()\[\]*\-+\/]+;/g;
 exports.separateMultilineVars = str => {
   return str.replace(separateMultilineVarsRE, match => {
     const indent = getIndent(match);
