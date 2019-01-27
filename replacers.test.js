@@ -575,6 +575,14 @@ Here is the same function from above rewritten to use this new syntax:
     const res = vars2constlet(t);
     assert.strictEqual(res, expected, 'Failed to handle logical not operator in assignment');
   });
+  it('should handle unary plus in assignment', () => {
+    const t = `var a = 1;
+    a = +b;`;
+    const expected = `let a = 1;
+    a = +b;`;
+    const res = vars2constlet(t);
+    assert.strictEqual(res, expected, 'Failed to handle unary plus in assignment');
+  });
 });
 
 describe('convert var to const or let', () => {
