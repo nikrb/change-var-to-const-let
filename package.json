@@ -4,14 +4,10 @@
   "description": "fcc change var to const/let in curriculum",
   "main": "replaceVars.js",
   "scripts": {
-    "de": "echo $(process.env)",
     "test": "mocha",
     "test:all": "mocha *.test.js",
     "test:watch": "mocha --watch *.test.js",
     "start": "node replaceVars > out.txt",
-    "cleanmd": "find . -name \"*.out.md\" -type f -delete",
-    "cleandif": "find . -name \"*.out.md.dif\" -type f -delete",
-    "clean": "npm run cleanmd && npm run cleandif",
     "lint": "eslint *.js || true"
   },
   "author": "",
