@@ -1,6 +1,7 @@
+/* eslint-disable max-len, quotes */
 const assert = require('assert');
 
-const { findMatchingBrace, getBlocks, normaliseBlocks, reduceBlocks } = require('./block');
+const { getBlocks, normaliseBlocks, reduceBlocks } = require('./block');
 
 describe('get blocks', () => {
   it('should handle no blocks', () => {
@@ -32,7 +33,7 @@ describe('get blocks', () => {
 }
     `;
     const expected = [{
-        text:'\n',
+        text: '\n',
         children: null,
       }, {
         text: `{\n  const block1;\n  {\n    const block2;\n  }\n}`,
@@ -96,7 +97,7 @@ describe('get blocks', () => {
           { text: '\n', children: null },
         ],
       }, {
-        text: '\n', children: null, 
+        text: '\n', children: null,
       }, {
         text: '{\n  const block4;\n  {\n    const block5;\n  }\n}',
         children: [
@@ -156,7 +157,7 @@ this is some instruction text
 
 describe('normalise blocks', () => {
   it('should normalise block text', () => {
-    const blocks =  [{
+    const blocks = [{
         text: '{\n  const block1;\n  {\n    const block2;\n  }\n  {\n    const block3;\n  }\n}',
         children: [{
           text: '{\n    const block2;\n  }',
@@ -173,7 +174,7 @@ describe('normalise blocks', () => {
         }],
       },
     ];
-    const expected =  [{
+    const expected = [{
         text: '{\n  const block1;\n  {\n    const block2;\n  }\n  {\n    const block3;\n  }\n}',
         part: '{\n  const block1;\n  bl0ck\n  bl1ck\n}',
         children: [{
@@ -319,7 +320,7 @@ describe('reduceBlocks', () => {
       }
     `;
     const res = reduceBlocks('part')(t);
-    assert.deepStrictEqual(res, expected, 'Failed to reduce blocks'); 
+    assert.deepStrictEqual(res, expected, 'Failed to reduce blocks');
   });
   it('should reduce blocks 2', () => {
     const t = [{

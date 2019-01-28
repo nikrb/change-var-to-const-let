@@ -1,3 +1,4 @@
+/* eslint-disable max-len, quotes */
 const assert = require('assert');
 const {
   splitVarDecs,
@@ -350,7 +351,6 @@ describe('change var to let if variable reassigned', () => {
     );
   });
   it('should preserve const if reassignment is also a definition', () => {
-    /* eslint-disable max-len */
     const t = `
 ## Description
 <section id='description'>
@@ -373,7 +373,6 @@ ES6 provides the syntactic sugar to eliminate the redundancy of having to write 
 Here is the same function from above rewritten to use this new syntax:
 <blockquote>const getMousePosition = (x, y) => ({ x, y });</blockquote>
 </section>`;
-    /* eslint-enable max-len */
     const res = vars2constlet(t);
     assert.strictEqual(res, expected,
       'Failed to preserve const when reassignment is also a definition');
@@ -448,7 +447,7 @@ Here is the same function from above rewritten to use this new syntax:
   });
   // this covers html closing > caught from <block#> - which is now bl#ck
   it('should preserve react key prop', () => {
-    const t =`<ul>
+    const t = `<ul>
   {this.state.messages.map( (message, idx) => {
       return (
          <li key={idx}>{message}</li>
@@ -456,7 +455,7 @@ Here is the same function from above rewritten to use this new syntax:
     })
   }
 </ul>`;
-    const expected =`<ul>
+    const expected = `<ul>
   {this.state.messages.map( (message, idx) => {
       return (
          <li key={idx}>{message}</li>

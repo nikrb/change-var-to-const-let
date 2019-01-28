@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 const assert = require('assert');
 
 const { findMatchingBrace } = require('./block');

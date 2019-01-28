@@ -1,4 +1,5 @@
-const { getIndent, findMatchingBrace, getBlocks, normaliseBlocks, reduceBlocks } = require('./block');
+/* eslint-disable max-len */
+const { getIndent, getBlocks, normaliseBlocks, reduceBlocks } = require('./block');
 // const { printBlocks } = require('./block');
 
 const forre = /(for\s*\()\s*\bvar\b\s+([a-zA-Z0-9]+)/g;
@@ -9,19 +10,28 @@ exports.fors = str => {
 const varre = /var\s+(\w+)\s*([=;])/g;
 const findVars = blocks => {
   return blocks.map(block => {
-    if (block.children) block.children = findVars(block.children);
+    if (block.children) {
+      block.children = findVars(block.children);
+    }
     block.vars = [];
     let matches = varre.exec(block.text);
-    while(matches !== null) {
-      block.vars.push({ name: matches[1], dec: matches[2] === ';', reassigned: false, ndx: matches.index });
+    while (matches !== null) {
+      block.vars.push({
+        name: matches[1],
+        dec: matches[2] === ';',
+        reassigned: false,
+        ndx: matches.index,
+      });
       matches = varre.exec(block.text);
     }
     return block;
   });
 };
 const findReassignment = blocks => {
-  return blocks.map((block, i) => {
-    if (block.children) findReassignment(block.children);
+  return blocks.map(block => {
+    if (block.children) {
+      findReassignment(block.children);
+    }
     let supertext;
     if (block.part.startsWith('{')) {
       supertext = reduceBlocks('part')([block]);
@@ -83,9 +93,13 @@ const splitVarDecs = str => {
   let count = 0;
   let i = 0;
   let lastNdx = 0;
-  while(i < str.length) {
-    if (str[i] === '[' || str[i] === '(') count++;
-    if (str[i] === ']' || str[i] === ')') count--;
+  while (i < str.length) {
+    if (str[i] === '[' || str[i] === '(') {
+      count++;
+    }
+    if (str[i] === ']' || str[i] === ')') {
+      count--;
+    }
     if (str[i] === ',' && count === 0) {
       bits.push(str.substring(lastNdx, i));
       lastNdx = i + 1;
