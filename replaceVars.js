@@ -5,8 +5,8 @@ catching the variable reassignents, which require a let declaration
 1. for loops - easy, just change var to let
 2. transform multiline declarations (separated with commas) giving each
     declaration it's own var line declaration
-3. swap all remaining var's to const's
-4. check through for const reassignement and change declaration to let
+3. check through and find the vars
+4. set the var to const or let if re/assigned
  */
 /* eslint-disable no-console */
 const fs = require('fs');
@@ -49,8 +49,8 @@ if (filelist) {
       const res = vars2constlet(separateMultilineVars(fors(str)));
       try {
         if (res !== str) {
-          const opfile = filepath.replace(/\.md/, '.out.md');
-          const difile = filepath.replace(/\.md/, '.out.md.dif');
+          const opfile = filepath.replace(/\.md/, '.out');
+          const difile = filepath.replace(/\.md/, '.dif');
           console.log('out file:', opfile);
           fs.writeFileSync(opfile, res);
           exec( `diff ${filepath} ${opfile} > ${difile}`);
