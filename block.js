@@ -76,7 +76,7 @@ const getBlocks = str => {
   if (open > 0) {
     blocks.push({ text: str.substring(0, open), children:null });
   }
-  while(open !== -1) {
+  while (open !== -1) {
     const newblock = { children: null };
     const curstr = str.substring(open);
     const close = findMatchingBrace(curstr);
