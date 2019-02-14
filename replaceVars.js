@@ -6,7 +6,7 @@ catching the variable reassignents, which require a let declaration
 2. transform multiline declarations (separated with commas) giving each
     declaration it's own var line declaration
 3. check through and find the vars
-4. set the var to const or let if re/assigned
+4. set the var to const, or let if re/assigned
  */
 /* eslint-disable no-console */
 const fs = require('fs');
@@ -33,6 +33,8 @@ if (process.argv.length > 2) {
     `!${process.env.FCC_BASE_DIR}/curriculum/challenges/english/01-responsive-web-design`,
     `!${process.env.FCC_BASE_DIR}/curriculum/challenges/english/02-javascript-algorithms-and-data-structures/basic-javascript`,
     `!${process.env.FCC_BASE_DIR}/curriculum/challenges/english/02-javascript-algorithms-and-data-structures/es6`,
+    `!${process.env.FCC_BASE_DIR}/curriculum/challenges/english/06-information-security-and-quality-assurance`,
+    `!${process.env.FCC_BASE_DIR}/curriculum/challenges/english/05-apis-and-microservices`,
     /* eslint-enable max-len */
   ]);
 }
