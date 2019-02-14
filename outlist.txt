@@ -1,0 +1,211 @@
+search /^\s to find first untested projects and failures.
+/^works means it works
+On branch replace-var-const
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+  conversion fails on 5 cases
+  dozen or so have issues, tests etc
+
+  check projects / external subjects for changes
+
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/debugging/use-the-javascript-console-to-check-the-value-of-a-variable.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/functional-programming/add-elements-to-the-end-of-an-array-using-concat-instead-of-push.english.md
+works (tests are too stringent?) modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/functional-programming/apply-functional-programming-to-convert-strings-to-url-slugs.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/functional-programming/avoid-mutations-and-side-effects-using-functional-programming.english.md
+works (tests are too stringent?) modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/functional-programming/combine-an-array-into-a-string-using-the-join-method.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/functional-programming/combine-two-arrays-using-the-concat-method.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/functional-programming/implement-map-on-a-prototype.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/functional-programming/implement-the-filter-method-on-a-prototype.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/functional-programming/introduction-to-currying-and-partial-application.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/functional-programming/pass-arguments-to-avoid-external-dependence-in-a-function.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/functional-programming/refactor-global-variables-out-of-functions.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/functional-programming/remove-elements-from-an-array-using-slice-instead-of-splice.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/functional-programming/return-a-sorted-array-without-changing-the-original-array.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/functional-programming/return-part-of-an-array-using-the-slice-method.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/functional-programming/split-a-string-into-an-array-using-the-split-method.english.md
+ fails (this one has the ,; in comments! and seed code passes client app test modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/functional-programming/understand-the-hazards-of-using-imperative-code.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/functional-programming/use-the-every-method-to-check-that-every-element-in-an-array-meets-a-criteria.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/functional-programming/use-the-filter-method-to-extract-data-from-an-array.english.md
+works dodgy instructions modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/functional-programming/use-the-map-method-to-extract-data-from-an-array.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/functional-programming/use-the-reduce-method-to-analyze-data.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/functional-programming/use-the-some-method-to-check-that-any-elements-in-an-array-meet-a-criteria.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/intermediate-algorithm-scripting/arguments-optional.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/intermediate-algorithm-scripting/convert-html-entities.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/intermediate-algorithm-scripting/diff-two-arrays.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/intermediate-algorithm-scripting/dna-pairing.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/intermediate-algorithm-scripting/make-a-person.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/intermediate-algorithm-scripting/map-the-debris.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/intermediate-algorithm-scripting/missing-letters.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/intermediate-algorithm-scripting/pig-latin.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/intermediate-algorithm-scripting/seek-and-destroy.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/intermediate-algorithm-scripting/smallest-common-multiple.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/intermediate-algorithm-scripting/steamroller.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/intermediate-algorithm-scripting/sum-all-numbers-in-a-range.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/intermediate-algorithm-scripting/sum-all-odd-fibonacci-numbers.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/intermediate-algorithm-scripting/sum-all-primes.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/intermediate-algorithm-scripting/wherefore-art-thou.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/javascript-algorithms-and-data-structures-projects/caesars-cipher.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/javascript-algorithms-and-data-structures-projects/cash-register.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/javascript-algorithms-and-data-structures-projects/palindrome-checker.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/javascript-algorithms-and-data-structures-projects/roman-numeral-converter.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/javascript-algorithms-and-data-structures-projects/telephone-number-validator.english.md
+works modified:   curriculum/challenges/english/02-javascript-algorithms-and-data-structures/regular-expressions/positive-and-negative-lookahead.english.md
+works modified:   curriculum/challenges/english/03-front-end-libraries/react/create-a-component-with-composition.english.md
+works modified:   curriculum/challenges/english/03-front-end-libraries/react/render-react-on-the-server-with-rendertostring.english.md
+works modified:   curriculum/challenges/english/03-front-end-libraries/react/review-using-props-with-stateless-functional-components.english.md
+works modified:   curriculum/challenges/english/03-front-end-libraries/react/use-advanced-javascript-in-react-render-method.english.md
+works modified:   curriculum/challenges/english/03-front-end-libraries/react/use-proptypes-to-define-the-props-you-expect.english.md
+works modified:   curriculum/challenges/english/04-data-visualization/json-apis-and-ajax/convert-json-data-to-html.english.md
+ conversion works but need better/more app tests modified:   curriculum/challenges/english/04-data-visualization/json-apis-and-ajax/post-data-with-the-javascript-xmlhttprequest-method.english.md
+works modified:   curriculum/challenges/english/04-data-visualization/json-apis-and-ajax/pre-filter-json-to-get-the-data-you-need.english.md
+works modified:   curriculum/challenges/english/04-data-visualization/json-apis-and-ajax/render-images-from-data-sources.english.md
+ This section is all external projects
+	project modified:   curriculum/challenges/english/05-apis-and-microservices/apis-and-microservices-projects/timestamp-microservice.en.md
+	project modified:   curriculum/challenges/english/05-apis-and-microservices/basic-node-and-express/chain-middleware-to-create-a-time-server.en.md
+	project modified:   curriculum/challenges/english/05-apis-and-microservices/managing-packages-with-npm/add-a-description-to-your-package.json.en.md
+	project modified:   curriculum/challenges/english/05-apis-and-microservices/managing-packages-with-npm/add-a-license-to-your-package.json.en.md
+	project modified:   curriculum/challenges/english/05-apis-and-microservices/managing-packages-with-npm/add-a-version-to-your-package.json.en.md
+	project modified:   curriculum/challenges/english/05-apis-and-microservices/managing-packages-with-npm/add-keywords-to-your-package.json.en.md
+	project modified:   curriculum/challenges/english/05-apis-and-microservices/managing-packages-with-npm/expand-your-project-with-external-packages-from-npm.en.md
+	project modified:   curriculum/challenges/english/05-apis-and-microservices/managing-packages-with-npm/how-to-use-package.json-the-core-of-any-node.js-project-or-npm-package.en.md
+	project modified:   curriculum/challenges/english/05-apis-and-microservices/managing-packages-with-npm/manage-npm-dependencies-by-understanding-semantic-versioning.en.md
+	project modified:   curriculum/challenges/english/05-apis-and-microservices/managing-packages-with-npm/remove-a-package-from-your-dependencies.en.md
+	project modified:   curriculum/challenges/english/05-apis-and-microservices/managing-packages-with-npm/use-the-caret-character-to-use-the-latest-minor-version-of-a-dependency.en.md
+	project modified:   curriculum/challenges/english/05-apis-and-microservices/managing-packages-with-npm/use-the-tilde-character-to-always-use-the-latest-patch-version-of-a-dependency.en.md
+	project modified:   curriculum/challenges/english/05-apis-and-microservices/mongodb-and-mongoose/create-a-model.en.md
+	project modified:   curriculum/challenges/english/05-apis-and-microservices/mongodb-and-mongoose/install-and-set-up-mongoose.en.md
+	project modified:   curriculum/challenges/english/06-information-security-and-quality-assurance/advanced-node-and-express/announce-new-users.english.md
+	modified:   curriculum/challenges/english/06-information-security-and-quality-assurance/advanced-node-and-express/authentication-strategies.english.md
+	modified:   curriculum/challenges/english/06-information-security-and-quality-assurance/advanced-node-and-express/authentication-with-socket.io.english.md
+	project modified:   curriculum/challenges/english/06-information-security-and-quality-assurance/advanced-node-and-express/communicate-by-emitting.english.md
+	project modified:   curriculum/challenges/english/06-information-security-and-quality-assurance/advanced-node-and-express/hashing-your-passwords.english.md
+	project modified:   curriculum/challenges/english/06-information-security-and-quality-assurance/advanced-node-and-express/implementation-of-social-authentication-ii.english.md
+	project modified:   curriculum/challenges/english/06-information-security-and-quality-assurance/advanced-node-and-express/serialization-of-a-user-object.english.md
+	project modified:   curriculum/challenges/english/06-information-security-and-quality-assurance/advanced-node-and-express/set-up-a-template-engine.english.md
+	project modified:   curriculum/challenges/english/06-information-security-and-quality-assurance/advanced-node-and-express/set-up-passport.english.md
+	project modified:   curriculum/challenges/english/06-information-security-and-quality-assurance/advanced-node-and-express/set-up-the-environment.english.md
+	project modified:   curriculum/challenges/english/06-information-security-and-quality-assurance/information-security-with-helmetjs/hash-and-compare-passwords-synchronously.english.md
+	project modified:   curriculum/challenges/english/06-information-security-and-quality-assurance/information-security-with-helmetjs/install-and-require-helmet.english.md
+	project modified:   curriculum/challenges/english/06-information-security-and-quality-assurance/information-security-with-helmetjs/set-a-content-security-policy-with-helmet.contentsecuritypolicy.english.md
+	project modified:   curriculum/challenges/english/06-information-security-and-quality-assurance/information-security-with-helmetjs/understand-bcrypt-hashes.english.md
+ end of external projects section
+works modified:   curriculum/challenges/english/08-coding-interview-prep/algorithms/find-the-symmetric-difference.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/algorithms/implement-bubble-sort.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/algorithms/implement-insertion-sort.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/algorithms/implement-merge-sort.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/algorithms/implement-quick-sort.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/algorithms/implement-selection-sort.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/algorithms/inventory-update.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/algorithms/no-repeats-please.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/algorithms/pairwise.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/add-a-new-element-to-a-binary-search-tree.english.md
+	fails client app, currculum test passes modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/add-elements-at-a-specific-index-in-a-linked-list.english.md
+	client app test passes with extra edges modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/adjacency-list.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/adjacency-matrix.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/breadth-first-search.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/check-if-an-element-is-present-in-a-binary-search-tree.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/create-a-circular-queue.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/create-a-doubly-linked-list.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/create-a-hash-table.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/create-a-linked-list-class.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/create-a-map-data-structure.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/create-a-priority-queue-class.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/create-a-queue-class.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/create-a-set-class.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/create-a-stack-class.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/create-a-trie-search-tree.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/create-and-add-to-sets-in-es6.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/delete-a-leaf-node-in-a-binary-search-tree.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/delete-a-node-with-one-child-in-a-binary-search-tree.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/delete-a-node-with-two-children-in-a-binary-search-tree.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/depth-first-search.english.md
+ client app fails, test is wrong? test tree is not balanced modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/find-the-minimum-and-maximum-height-of-a-binary-search-tree.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/find-the-minimum-and-maximum-value-in-a-binary-search-tree.english.md
+	test issues modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/implement-heap-sort-with-a-min-heap.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/incidence-matrix.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/insert-an-element-into-a-max-heap.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/invert-a-binary-tree.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/learn-how-a-stack-works.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/perform-a-difference-on-two-sets-of-data.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/perform-a-subset-check-on-two-sets-of-data.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/perform-a-union-on-two-sets.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/perform-an-intersection-on-two-sets-of-data.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/remove-an-element-from-a-max-heap.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/remove-elements-from-a-linked-list-by-index.english.md
+	solution is incorrect (works with fixed solution) modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/remove-elements-from-a-linked-list.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/remove-from-a-set.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/remove-items-from-a-set-in-es6.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/reverse-a-doubly-linked-list.english.md
+ works with fixed seed code modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/search-within-a-linked-list.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/size-of-the-set.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/typed-arrays.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/use-.has-and-.size-on-an-es6-set.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/use-breadth-first-search-in-a-binary-search-tree.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/use-depth-first-search-in-a-binary-search-tree.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/use-spread-and-notes-for-es5-set-integration.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/data-structures/work-with-nodes-in-a-linked-list.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/project-euler/problem-1-multiples-of-3-and-5.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/project-euler/problem-12-highly-divisible-triangular-number.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/project-euler/problem-34-digit-factorials.english.md
+	works test need improving modified:   curriculum/challenges/english/08-coding-interview-prep/project-euler/problem-5-smallest-multiple.english.md
+  conversion works but seed/solution missing decs for 'i' modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/closest-pair-problem.english.md
+	convertsion works but seed/solution has unused var code modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/execute-brain.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/fibonacci-word.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/fractran.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/gamma-function.english.md
+ conversion works but solution has missing dec for j modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/gaussian-elimination.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/generate-lower-case-ascii-alphabet.english.md
+	conversion works, curriculum tests pass, client app tests fail modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/generatorexponential.english.md
+	conversion works, curriculum tests pass, client app tests fail modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/greatest-subsequential-sum.english.md
+	conversion works, tests fail across board modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/iban.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/iterated-digits-squaring.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/jaro-distance.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/jortsort.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/josephus-problem.english.md
+	conversion seems to work but for let a, b seems fails modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/s-expressions.english.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/sort-using-a-custom-comparator.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/sorting-algorithms-bead-sort.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/sorting-algorithms-bogosort.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/sorting-algorithms-bubble-sort.md
+	fails gap is read-only modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/sorting-algorithms-comb-sort.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/sorting-algorithms-counting-sort.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/sorting-algorithms-gnome-sort.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/sorting-algorithms-heapsort.md
+	conversion looks good but tests fail across board for j is not defined modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/sorting-algorithms-insertion-sort.md
+works	modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/sorting-algorithms-merge-sort.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/sorting-algorithms-pancake-sort.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/sorting-algorithms-permutation-sort.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/sorting-algorithms-quicksort.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/sorting-algorithms-radix-sort.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/sorting-algorithms-selection-sort.md
+	conversion looks good but test fail across board modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/sorting-algorithms-shell-sort.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/sorting-algorithms-stooge-sort.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/sorting-algorithms-strand-sort.md
+	fail r is read-only modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/soundex.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/spiral-matrix.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/state-name-puzzle.md
+works	modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/stern-brocot-sequence.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/straddling-checkerboard.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/stream-merge.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/strip-control-codes-and-extended-characters-from-a-string.md
+works	modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/subleq.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/sudoku.md
+	solution needs adjusting with let, var hoists var so it can be referenced outside for loop modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/sum-digits-of-an-integer.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/sum-multiples-of-3-and-5.md
+works modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/sum-of-a-series.md
+works	modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/sum-of-squares.md
+works	modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/sum-to-100.md
+	fails const i should be let i modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/sutherland-hodgman-polygon-clipping.md
+works	modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/symmetric-difference.md
+	client app works but curriculum test fails, unhandled promise modified:   curriculum/challenges/english/08-coding-interview-prep/rosetta-code/y-combinator.english.md
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	diflist
+	out
+	outlist
+
+no changes added to commit (use "git add" and/or "git commit -a")
