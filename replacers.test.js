@@ -609,7 +609,7 @@ describe('convert var to const or let', () => {
     const res = vars2constlet(t);
     assert.strictEqual(res, expected, 'Failed to convert var to let for reassigned var');
   });
-  it('should convert var to let when reassigned in sibling block', () => {
+  it('should convert global var to let when reassigned in sibling block', () => {
     const t = `
       var a = 1;
       function() {
