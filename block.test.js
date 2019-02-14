@@ -293,11 +293,12 @@ describe('reduceBlocks', () => {
         vars: [],
       }, {
         children: [{
-          text: '{\n          a++;\n        }',
-          part: '{\n          a++;\n        }',
-          vars: [],
-          children: null
-        }, { text: '\n      ', part: '\n      ', children: null, vars: [] },
+            text: '{\n          a++;\n        }',
+            part: '{\n          a++;\n        }',
+            vars: [],
+            children: null
+          },
+          { text: '\n      ', part: '\n      ', children: null, vars: [] },
         ],
         text:
          '{\n        var a = 1;\n        for (var i = 1; i < 5; i++) {\n          a++;\n        }\n      }',
