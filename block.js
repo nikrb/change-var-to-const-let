@@ -1,7 +1,9 @@
 const printBlocks = (blocks, desc) => {
+  // eslint-disable-next-line no-unused-expressions
   desc ? console.log(desc) : console.log('Children');
   blocks.forEach(block => {
     console.log(block);
+    // eslint-disable-next-line curly
     if (block.children) printBlocks(block.children);
   });
 };
@@ -11,15 +13,17 @@ exports.getIndent = s => {
   const count = s.search(/\w/);
   if (count < 1) { return ''; }
   return ' '.repeat(count - 1);
-}
+};
 
 const findMatchingBrace = str => {
   let count = 0;
   let ndx = 0;
-  while(ndx < str.length) {
+  while (ndx < str.length) {
+    // eslint-disable-next-line curly
     if (str[ndx] === '{') count++;
     if (str[ndx] === '}') {
       count--;
+      // eslint-disable-next-line curly
       if (count === 0) break;
     }
     ndx += 1;
@@ -31,11 +35,11 @@ exports.findMatchingBrace = findMatchingBrace;
 // reduce the blocks back to a string.
 // hydrate block ids with child text
 const reduceBlocks = fieldname => blocks => {
-  return blocks.reduce((acc, block, i) => {
+  return blocks.reduce((acc, block) => {
     const blockre = /bl(\d+)ck/g;
     let matches = blockre.exec(block.part);
     let newpart = block.part;
-    while(matches) {
+    while (matches) {
       let childstr = reduceBlocks(fieldname)([block.children[matches[1]]]);
       // check for dollar sign
       if (childstr.indexOf('$') > -1) {
@@ -70,11 +74,12 @@ exports.normaliseBlocks = normaliseBlocks;
 const getBlocks = str => {
   const blocks = [];
   let open = str.indexOf('{');
-  let lastCloseNdx = str.length+1;
+  let lastCloseNdx = str.length + 1;
+  // eslint-disable-next-line curly
   if (open === -1) return [{ text: str, children: null }];
   // normally a block starts with open brace, but not for body text
   if (open > 0) {
-    blocks.push({ text: str.substring(0, open), children:null });
+    blocks.push({ text: str.substring(0, open), children: null });
   }
   while (open !== -1) {
     const newblock = { children: null };
@@ -90,13 +95,18 @@ const getBlocks = str => {
     lastCloseNdx = open + close;
     open = str.indexOf('{', open + close + 1);
     if (open - lastCloseNdx > 1) {
-      blocks.push({ text: str.substring(lastCloseNdx + 1, open), children: null });
+      blocks.push({
+        text: str.substring(lastCloseNdx + 1, open),
+        children: null,
+      });
     }
   }
   if (lastCloseNdx < str.length) {
     let endndx = str.indexOf('}', lastCloseNdx + 1);
+    // eslint-disable-next-line curly
     if (endndx === -1) endndx = str.length;
     const text = str.substring(lastCloseNdx + 1, endndx);
+    // eslint-disable-next-line curly
     if (text.length) blocks.push({ text, children: null });
   }
   return blocks;

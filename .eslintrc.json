@@ -4,6 +4,7 @@
     "mocha": true,
     "node": true
   },
+  "parser": "babel-eslint",
   "plugins": [
     "prefer-object-spread"
   ],
